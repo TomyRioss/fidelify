@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__desktop-commander__list_directory",
+      "WebSearch",
+      "Bash(tail:*)",
+      "WebFetch(domain:pris.ly)",
+      "Bash(cd /c/Users/Pc/Desktop/fidelyai && npx shadcn@latest init -d 2>&1)",
+      "WebFetch(domain:www.prisma.io)"
+    ]
+  }
+}
