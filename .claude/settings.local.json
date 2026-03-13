@@ -6,7 +6,26 @@
       "Bash(tail:*)",
       "WebFetch(domain:pris.ly)",
       "Bash(cd /c/Users/Pc/Desktop/fidelyai && npx shadcn@latest init -d 2>&1)",
-      "WebFetch(domain:www.prisma.io)"
+      "WebFetch(domain:www.prisma.io)",
+      "Bash(cd /c/Users/Pc/Desktop/fidelyai && npx prisma generate 2>&1)",
+      "Bash(cd /c/Users/Pc/Desktop/fidelyai && npm install react-icons 2>&1)",
+      "Bash(pip install:*)",
+      "Bash(head:*)",
+      "Bash(grep:*)",
+      "Bash(cd /c/Users/Pc/Desktop/fidelyai && npx shadcn@latest add select --yes 2>&1)",
+      "Bash(cd /c/Users/Pc/Desktop/fidelyai && npx prisma validate 2>&1)",
+      "Bash(cd:*)",
+      "mcp__desktop-commander__read_file",
+      "Bash(npm show next version 2>/dev/null && npm show react version 2>/dev/null && npm show tailwindcss version 2>/dev/null && npm show next-auth version 2>/dev/null && npm show prisma version 2>/dev/null)",
+      "Bash(cd /c/Users/Pc/Desktop/fidelyai && npx shadcn@latest add dialog sonner --yes 2>&1)",
+      "Bash(cd /c/Users/Pc/Desktop/fidelyai && echo \"N\" | npx shadcn@latest add dialog sonner --yes 2>&1 || npx shadcn@latest add dialog sonner --overwrite 2>&1)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(test:*)",
+      "Bash(find /c/Users/Pc/Desktop/fidelyai/app/api -type f -name \"*.ts\" -o -name \"*.tsx\" 2>/dev/null | head -20)",
+      "Bash(find C:/Users/Pc/Desktop/fidelyai/components C:/Users/Pc/Desktop/fidelyai/app -name \"*.tsx\" -type f | head -60 | while read f; do grep -n \"bg-gray\\\\|bg-stone\\\\|bg-amber\\\\|text-gray\\\\|border-gray\\\\|bg-green\\\\|bg-red-5\\\\|bg-blue\\\\|bg-purple\\\\|bg-slate\\\\|bg-zinc\\\\|text-black\\\\s\\\\|bg-black\" \"$f\" 2>/dev/null && echo \"FILE: $f\"; done)",
+      "Bash(npx prisma:*)",
+      "Read(//tmp/**)"
     ]
   }
 }

@@ -1,0 +1,13 @@
+import { redirect } from "next/navigation";
+import { getRestaurantBySlug, getClientByIdAndRestaurant } from "@/lib/services/tienda-service";
+import ClientDashboard from "@/components/tienda/ClientDashboard";
+
+export default async function ClientePage({ params }: { params: { negocio: string; clientId: string } }) {
+  const restaurant = await getRestaurantBySlug(params.negocio);
+  if (!restaurant) redirect("/404");
+
+  const client = await getClientByIdAndRestaurant(restaurant.id, params.clientId);
+  if (!client) redirect("/404");
+
+  return <ClientDashboard client={client} negocio={params.negocio} />;
+}

@@ -5,3 +5,472 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  SUSPENDED
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  OWNER
+  ADMIN
+  EMPLOYEE
+}
+
+enum PointsLedgerType {
+  PURCHASE
+  REDEMPTION
+  SURVEY_REWARD
+  MANUAL
+  RAFFLE_COST
+}
+
+enum GiftType {
+  FREE_PRODUCT
+  DISCOUNT
+  COUPON
+  CUSTOM
+}
+
+enum CouponType {
+  PERCENTAGE
+  FIXED_AMOUNT
+  FREE_PRODUCT
+  CUSTOM
+}
+
+enum RaffleParticipationType {
+  FREE
+  POINTS_COST
+}
+
+enum SurveyType {
+  INTERNAL
+  EXTERNAL
+}
+
+enum SurveyActionType {
+  ADD_POINTS
+  ASSIGN_COUPON
+  ADD_RAFFLE_ENTRY
+  DELIVER_GIFT
+  WEBHOOK
+  CUSTOM_NOTE
+}
+
+enum SurveyQuestionType {
+  MULTIPLE_CHOICE
+  SCALE
+  FREE_TEXT
+  YES_NO
+}
+
+// ─── Models ──────────────────────────────────────────────────────────────────
+
+model Restaurant {
+  id                 String             @id @default(cuid())
+  name               String
+  slug               String             @unique
+  email              String
+  phone              String?
+  address            String?
+  subscriptionStatus SubscriptionStatus @default(TRIAL)
+  trialStartsAt      DateTime?
+  trialEndsAt        DateTime?
+  createdAt          DateTime           @default(now())
+
+  users              User[]
+  branches           Branch[]
+  pointsRules        PointsRule[]
+  clients            Client[]
+  menuItems          MenuItem[]
+  sales              Sale[]
+  visits             Visit[]
+  pointsLedger       PointsLedger[]
+  catalogProducts    CatalogProduct[]
+  redemptions        Redemption[]
+  giftMilestones     GiftMilestone[]
+  giftDeliveries     GiftDelivery[]
+  coupons            Coupon[]
+  couponAssignments  CouponAssignment[]
+  raffles            Raffle[]
+  raffleEntries      RaffleEntry[]
+  surveys            Survey[]
+  surveyResponses    SurveyResponse[]
+}
+
+model Branch {
+  id           String   @id @default(cuid())
+  restaurantId String
+  name         String
+  address      String?
+  phone        String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  restaurant        Restaurant         @relation(fields: [restaurantId], references: [id])
+  userBranches      UserBranch[]
+  sales             Sale[]
+  visits            Visit[]
+  pointsLedger      PointsLedger[]
+  redemptions       Redemption[]
+  giftDeliveries    GiftDelivery[]
+  raffleEntries     RaffleEntry[]
+  surveyResponses   SurveyResponse[]
+  couponAssignments CouponAssignment[]
+}
+
+model User {
+  id             String   @id @default(cuid())
+  restaurantId   String?
+  email          String   @unique
+  name           String
+  role           UserRole @default(EMPLOYEE)
+  password       String
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  restaurant        Restaurant?        @relation(fields: [restaurantId], references: [id])
+  userBranches      UserBranch[]
+  sales             Sale[]             @relation("RegisteredBy")
+  redemptions       Redemption[]       @relation("RedeemedBy")
+  giftDeliveries    GiftDelivery[]     @relation("DeliveredBy")
+  couponAssignments CouponAssignment[] @relation("UsedBy")
+}
+
+model UserBranch {
+  id        String   @id @default(cuid())
+  userId    String
+  branchId  String
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  branch Branch @relation(fields: [branchId], references: [id])
+
+  @@unique([userId, branchId])
+}
+
+model PointsRule {
+  id             String   @id @default(cuid())
+  restaurantId   String
+  amountPerPoint Decimal
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+}
+
+model Client {
+  id          String    @id @default(cuid())
+  restaurantId String
+  dni         String
+  firstName   String
+  lastName    String
+  phone       String?
+  email       String?
+  birthDate   DateTime?
+  pin         String?
+  points      Int       @default(0)
+  visitCount  Int       @default(0)
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  restaurant        Restaurant         @relation(fields: [restaurantId], references: [id])
+  sales             Sale[]
+  visits            Visit[]
+  pointsLedger      PointsLedger[]
+  redemptions       Redemption[]
+  clientRedemptions Redemption[]   @relation("RedeemedByClient")
+  giftDeliveries    GiftDelivery[]
+  couponAssignments CouponAssignment[]
+  raffleEntries     RaffleEntry[]
+  raffleWins        Raffle[]
+  surveyResponses   SurveyResponse[]
+
+  @@unique([restaurantId, dni])
+}
+
+model MenuItem {
+  id           String   @id @default(cuid())
+  restaurantId String
+  name         String
+  description  String?
+  price        Decimal
+  category     String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  restaurant Restaurant  @relation(fields: [restaurantId], references: [id])
+  saleItems  SaleItem[]
+}
+
+model Sale {
+  id                 String   @id @default(cuid())
+  restaurantId       String
+  branchId           String
+  clientId           String
+  total              Decimal
+  pointsEarned       Int
+  registeredById     String
+  couponAssignmentId String?
+  createdAt          DateTime @default(now())
+
+  restaurant       Restaurant        @relation(fields: [restaurantId], references: [id])
+  branch           Branch            @relation(fields: [branchId], references: [id])
+  client           Client            @relation(fields: [clientId], references: [id])
+  registeredBy     User              @relation("RegisteredBy", fields: [registeredById], references: [id])
+  couponAssignment CouponAssignment? @relation(fields: [couponAssignmentId], references: [id])
+  saleItems        SaleItem[]
+  visit            Visit?
+}
+
+model SaleItem {
+  id         String   @id @default(cuid())
+  saleId     String
+  menuItemId String?
+  name       String
+  price      Decimal
+  quantity   Int
+
+  sale     Sale      @relation(fields: [saleId], references: [id])
+  menuItem MenuItem? @relation(fields: [menuItemId], references: [id])
+}
+
+model Visit {
+  id           String   @id @default(cuid())
+  restaurantId String
+  branchId     String
+  clientId     String
+  saleId       String   @unique
+  createdAt    DateTime @default(now())
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  branch     Branch     @relation(fields: [branchId], references: [id])
+  client     Client     @relation(fields: [clientId], references: [id])
+  sale       Sale       @relation(fields: [saleId], references: [id])
+
+  @@index([clientId, createdAt])
+}
+
+model PointsLedger {
+  id           String           @id @default(cuid())
+  restaurantId String
+  branchId     String
+  clientId     String
+  delta        Int
+  type         PointsLedgerType
+  referenceId  String?
+  createdAt    DateTime         @default(now())
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  branch     Branch     @relation(fields: [branchId], references: [id])
+  client     Client     @relation(fields: [clientId], references: [id])
+
+  @@index([clientId, createdAt])
+}
+
+model CatalogProduct {
+  id           String   @id @default(cuid())
+  restaurantId String
+  name         String
+  description  String?
+  imageUrl     String?
+  pointCost    Int
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  restaurant  Restaurant   @relation(fields: [restaurantId], references: [id])
+  redemptions Redemption[]
+}
+
+model Redemption {
+  id           String   @id @default(cuid())
+  restaurantId String
+  branchId     String
+  clientId     String
+  productId    String
+  pointsSpent        Int
+  redeemedById       String?
+  redeemedByClientId String?
+  createdAt          DateTime @default(now())
+
+  restaurant       Restaurant     @relation(fields: [restaurantId], references: [id])
+  branch           Branch         @relation(fields: [branchId], references: [id])
+  client           Client         @relation(fields: [clientId], references: [id])
+  product          CatalogProduct @relation(fields: [productId], references: [id])
+  redeemedBy       User?          @relation("RedeemedBy", fields: [redeemedById], references: [id])
+  redeemedByClient Client?        @relation("RedeemedByClient", fields: [redeemedByClientId], references: [id])
+}
+
+model GiftMilestone {
+  id           String    @id @default(cuid())
+  restaurantId String
+  visitTrigger Int
+  giftType     GiftType
+  description  String
+  active       Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+
+  restaurant     Restaurant     @relation(fields: [restaurantId], references: [id])
+  giftDeliveries GiftDelivery[]
+}
+
+model GiftDelivery {
+  id            String    @id @default(cuid())
+  restaurantId  String
+  branchId      String
+  clientId      String
+  milestoneId   String
+  delivered     Boolean   @default(false)
+  deliveredAt   DateTime?
+  deliveredById String?
+  createdAt     DateTime  @default(now())
+
+  restaurant  Restaurant    @relation(fields: [restaurantId], references: [id])
+  branch      Branch        @relation(fields: [branchId], references: [id])
+  client      Client        @relation(fields: [clientId], references: [id])
+  milestone   GiftMilestone @relation(fields: [milestoneId], references: [id])
+  deliveredBy User?         @relation("DeliveredBy", fields: [deliveredById], references: [id])
+}
+
+model Coupon {
+  id                String     @id @default(cuid())
+  restaurantId      String
+  name              String
+  description       String?
+  type              CouponType
+  value             Decimal?
+  customDescription String?
+  expiresAt         DateTime?
+  createdAt         DateTime   @default(now())
+
+  restaurant        Restaurant         @relation(fields: [restaurantId], references: [id])
+  couponAssignments CouponAssignment[]
+}
+
+model CouponAssignment {
+  id           String    @id @default(cuid())
+  restaurantId String
+  branchId     String
+  clientId     String
+  couponId     String
+  used         Boolean   @default(false)
+  usedAt       DateTime?
+  usedById     String?
+  createdAt    DateTime  @default(now())
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  branch     Branch     @relation(fields: [branchId], references: [id])
+  client     Client     @relation(fields: [clientId], references: [id])
+  coupon     Coupon     @relation(fields: [couponId], references: [id])
+  usedBy     User?      @relation("UsedBy", fields: [usedById], references: [id])
+  sales      Sale[]
+
+  @@index([clientId, used])
+}
+
+model Raffle {
+  id                String                  @id @default(cuid())
+  restaurantId      String
+  name              String
+  description       String?
+  prize             String
+  closingDate       DateTime
+  participationType RaffleParticipationType
+  pointsCost        Int?
+  executed          Boolean                 @default(false)
+  winnerId          String?
+  createdAt         DateTime                @default(now())
+
+  restaurant    Restaurant    @relation(fields: [restaurantId], references: [id])
+  winner        Client?       @relation(fields: [winnerId], references: [id])
+  raffleEntries RaffleEntry[]
+}
+
+model RaffleEntry {
+  id           String   @id @default(cuid())
+  restaurantId String
+  branchId     String
+  clientId     String
+  raffleId     String
+  createdAt    DateTime @default(now())
+
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  branch     Branch     @relation(fields: [branchId], references: [id])
+  client     Client     @relation(fields: [clientId], references: [id])
+  raffle     Raffle     @relation(fields: [raffleId], references: [id])
+
+  @@unique([raffleId, clientId])
+}
+
+model Survey {
+  id           String     @id @default(cuid())
+  restaurantId String
+  title        String
+  description  String?
+  type         SurveyType
+  externalUrl  String?
+  active       Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+
+  restaurant      Restaurant       @relation(fields: [restaurantId], references: [id])
+  surveyActions   SurveyAction[]
+  surveyQuestions SurveyQuestion[]
+  surveyResponses SurveyResponse[]
+}
+
+model SurveyAction {
+  id         String           @id @default(cuid())
+  surveyId   String
+  actionType SurveyActionType
+  payload    Json
+  order      Int
+  createdAt  DateTime         @default(now())
+
+  survey Survey @relation(fields: [surveyId], references: [id])
+}
+
+model SurveyQuestion {
+  id        String             @id @default(cuid())
+  surveyId  String
+  text      String
+  type      SurveyQuestionType
+  options   Json?
+  required  Boolean            @default(true)
+  order     Int
+  createdAt DateTime           @default(now())
+
+  survey          Survey         @relation(fields: [surveyId], references: [id])
+  surveyAnswers   SurveyAnswer[]
+}
+
+model SurveyResponse {
+  id              String   @id @default(cuid())
+  restaurantId    String
+  branchId        String
+  clientId        String
+  surveyId        String
+  actionsExecuted Boolean  @default(false)
+  metadata        Json?
+  createdAt       DateTime @default(now())
+
+  restaurant    Restaurant     @relation(fields: [restaurantId], references: [id])
+  branch        Branch         @relation(fields: [branchId], references: [id])
+  client        Client         @relation(fields: [clientId], references: [id])
+  survey        Survey         @relation(fields: [surveyId], references: [id])
+  surveyAnswers SurveyAnswer[]
+}
+
+model SurveyAnswer {
+  id         String @id @default(cuid())
+  responseId String
+  questionId String
+  answer     String
+
+  response SurveyResponse @relation(fields: [responseId], references: [id])
+  question SurveyQuestion @relation(fields: [questionId], references: [id])
+}
