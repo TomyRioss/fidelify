@@ -34,7 +34,7 @@ export default function POSProductGrid({ products, onAdd }: Props) {
       const matchesSearch =
         !search || p.name.toLowerCase().includes(search.toLowerCase());
       const matchesCat = !selectedCategory || p.category === selectedCategory;
-      return matchesSearch && matchesCat && p.active !== false;
+      return matchesSearch && matchesCat;
     });
   }, [products, search, selectedCategory]);
 

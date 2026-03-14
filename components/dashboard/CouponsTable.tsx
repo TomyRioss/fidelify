@@ -12,7 +12,7 @@ type Coupon = {
   id: string;
   name: string;
   description: string | null;
-  type: "PERCENTAGE" | "FIXED_AMOUNT";
+  type: "PERCENTAGE" | "FIXED_AMOUNT" | "FREE_PRODUCT" | "CUSTOM";
   value: string | null;
   expiresAt: string | null;
   createdAt: string;

@@ -15,7 +15,8 @@ export function BranchSelector() {
 
   if (!branches.length) return null;
 
-  function handleChange(id: string) {
+  function handleChange(id: string | null) {
+    if (!id) return;
     const branch = branches.find((b) => b.id === id);
     if (branch) setActiveBranch(branch);
   }

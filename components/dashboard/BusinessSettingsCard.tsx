@@ -57,8 +57,8 @@ export default function BusinessSettingsCard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: form.name.trim(),
-          phone: form.phone.trim() || null,
-          address: form.address.trim() || null,
+          phone: (form.phone ?? "").trim() || null,
+          address: (form.address ?? "").trim() || null,
         }),
       });
       if (!res.ok) {
@@ -122,7 +122,7 @@ export default function BusinessSettingsCard() {
         <Label htmlFor="phone" className="text-orange-700">Teléfono</Label>
         <Input
           id="phone"
-          value={form.phone}
+          value={form.phone ?? ""}
           onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
           placeholder="+54 11 0000-0000"
           className="text-neutral-900 border-orange-200 focus:ring-orange-300"
@@ -134,7 +134,7 @@ export default function BusinessSettingsCard() {
         <Label htmlFor="address" className="text-orange-700">Dirección</Label>
         <Input
           id="address"
-          value={form.address}
+          value={form.address ?? ""}
           onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
           placeholder="Av. Corrientes 1234"
           className="text-neutral-900 border-orange-200 focus:ring-orange-300"

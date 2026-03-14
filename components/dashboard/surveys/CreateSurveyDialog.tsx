@@ -158,7 +158,7 @@ export default function CreateSurveyDialog({ open, onClose, onCreated }: Props) 
 
           <div className="flex flex-col gap-1.5">
             <Label>Tipo</Label>
-            <Select value={type} onValueChange={setType}>
+            <Select value={type} onValueChange={(v) => v && setType(v)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -218,7 +218,7 @@ export default function CreateSurveyDialog({ open, onClose, onCreated }: Props) 
 
                   <Select
                     value={q.type}
-                    onValueChange={(v) => updateQuestion(idx, "type", v)}
+                    onValueChange={(v) => v && updateQuestion(idx, "type", v)}
                   >
                     <SelectTrigger>
                       <SelectValue />

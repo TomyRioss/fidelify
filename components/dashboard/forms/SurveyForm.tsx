@@ -176,7 +176,7 @@ export default function SurveyForm() {
                 <Label htmlFor={`q-type-${i}`}>Tipo de respuesta</Label>
                 <Select
                   value={q.type}
-                  onValueChange={(v) => updateQuestion(i, "type", v)}
+                  onValueChange={(v) => v && updateQuestion(i, "type", v)}
                 >
                   <SelectTrigger id={`q-type-${i}`}>
                     <SelectValue />
