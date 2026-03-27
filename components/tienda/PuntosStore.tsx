@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { FiShoppingBag } from "react-icons/fi";
+import { FiShoppingBag, FiCheckCircle } from "react-icons/fi";
 
 interface Product {
   id: string;
@@ -10,6 +10,13 @@ interface Product {
   description: string | null;
   pointCost: number;
   active: boolean;
+}
+
+interface Receipt {
+  id: string;
+  productName: string;
+  pointsSpent: number;
+  createdAt: string;
 }
 
 interface Client {
@@ -26,6 +33,7 @@ export default function PuntosStore({ client, onPointsChange }: Props) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [redeeming, setRedeeming] = useState<string | null>(null);
+  const [receipt, setReceipt] = useState<Receipt | null>(null);
 
   useEffect(() => {
     fetch("/api/dashboard/catalog")
@@ -48,8 +56,8 @@ export default function PuntosStore({ client, onPointsChange }: Props) {
       });
       const data = await res.json();
       if (res.ok) {
-        toast.success(`"${product.name}" canjeado correctamente.`);
         onPointsChange(client.points - product.pointCost);
+        setReceipt(data.redemption);
       } else {
         toast.error(data.error ?? "Error al canjear.");
         console.error("[PuntosStore] redeem error:", data);
@@ -70,9 +78,45 @@ export default function PuntosStore({ client, onPointsChange }: Props) {
 
   if (activeProducts.length === 0) {
     return (
-      <div className="rounded-xl border border-neutral-200 bg-white p-8 text-center">
+      <div className="rounded-xl border border-orange-200 bg-white p-8 text-center">
         <FiShoppingBag className="mx-auto mb-2 text-2xl text-neutral-400" />
         <p className="text-sm text-neutral-500">No hay productos en la tienda.</p>
+      </div>
+    );
+  }
+
+  if (receipt) {
+    const code = receipt.id.slice(0, 8).toUpperCase();
+    const date = new Date(receipt.createdAt).toLocaleString("es-AR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return (
+      <div className="flex flex-col items-center gap-6 rounded-xl border-2 border-orange-200 bg-white p-8 text-center shadow-sm">
+        <FiCheckCircle className="text-6xl text-orange-500" />
+        <div className="flex flex-col gap-1">
+          <p className="text-xl font-bold text-neutral-900">{receipt.productName}</p>
+          <p className="text-sm text-neutral-500">Canje realizado el {date}</p>
+        </div>
+        <div className="flex flex-col gap-1">
+          <p className="text-sm font-medium text-neutral-500">Código de comprobante</p>
+          <p className="font-mono text-3xl font-bold tracking-widest text-orange-600">{code}</p>
+        </div>
+        <p className="text-sm font-semibold text-neutral-700">
+          {receipt.pointsSpent.toLocaleString()} puntos descontados
+        </p>
+        <p className="max-w-xs text-sm text-neutral-500">
+          Mostrá este comprobante al empleado para obtener tu beneficio.
+        </p>
+        <button
+          onClick={() => setReceipt(null)}
+          className="rounded-lg border-2 border-orange-300 bg-orange-50 px-6 py-2.5 text-sm font-medium text-orange-700 hover:bg-orange-100"
+        >
+          Volver a la tienda
+        </button>
       </div>
     );
   }
@@ -84,21 +128,21 @@ export default function PuntosStore({ client, onPointsChange }: Props) {
         return (
           <div
             key={product.id}
-            className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white p-4"
+            className="flex items-center justify-between rounded-xl border-2 border-orange-200 bg-white p-5 shadow-sm"
           >
             <div>
-              <p className="text-sm font-medium text-neutral-900">{product.name}</p>
+              <p className="text-base font-semibold text-neutral-900">{product.name}</p>
               {product.description && (
-                <p className="text-xs text-neutral-500">{product.description}</p>
+                <p className="mt-0.5 text-sm text-neutral-500">{product.description}</p>
               )}
-              <p className="mt-1 text-xs font-semibold text-neutral-700">
+              <p className="mt-2 text-sm font-bold text-orange-600">
                 {product.pointCost.toLocaleString()} puntos
               </p>
             </div>
             <button
               onClick={() => handleRedeem(product)}
               disabled={!canRedeem || redeeming === product.id}
-              className="rounded-lg bg-orange-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-orange-500 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg bg-orange-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-orange-500 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {redeeming === product.id ? "Canjeando..." : "Canjear"}
             </button>

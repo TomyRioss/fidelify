@@ -13,7 +13,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-screen w-60 flex-col border-r border-neutral-200 bg-white">
+    <aside className="flex h-screen w-60 flex-col border-r border-orange-200 bg-white">
       <div className="flex h-16 items-center border-b border-neutral-100 px-5">
         <span className="text-base font-semibold tracking-tight text-neutral-900">Fidely</span>
       </div>
@@ -27,8 +27,8 @@ export default function Sidebar() {
               href={href}
               className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-colors ${
                 active
-                  ? "bg-neutral-100 font-medium text-neutral-900"
-                  : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
+                  ? "bg-orange-50 font-medium text-orange-600"
+                  : "text-neutral-500 hover:bg-orange-50 hover:text-orange-600"
               }`}
             >
               <Icon className="shrink-0 text-lg" />
@@ -41,7 +41,7 @@ export default function Sidebar() {
       <div className="border-t border-neutral-100 px-3 py-3">
         <button
           onClick={() => signOut({ callbackUrl: "/admin" })}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-neutral-500 transition-colors hover:bg-orange-50 hover:text-orange-600"
         >
           <FiLogOut className="shrink-0 text-lg" />
           Cerrar sesión

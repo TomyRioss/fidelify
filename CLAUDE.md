@@ -1,5 +1,8 @@
 # Project Instructions for Claude
 
+## Fallbacks
+- Never use hardcoded fallback values (e.g. `?? "Mi Negocio"`, `|| "default"`). If data is loading, show a spinner. If data is missing, show nothing or an explicit error state.
+
 ## Error Handling
 - All errors must be caught and handled explicitly.
 - Every error must produce both console feedback (descriptive log) and visual feedback to the user (toast, alert, inline message, or equivalent UX/UI element).

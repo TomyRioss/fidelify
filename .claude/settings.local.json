@@ -26,7 +26,8 @@
       "Bash(find C:/Users/Pc/Desktop/fidelyai/components C:/Users/Pc/Desktop/fidelyai/app -name \"*.tsx\" -type f | head -60 | while read f; do grep -n \"bg-gray\\\\|bg-stone\\\\|bg-amber\\\\|text-gray\\\\|border-gray\\\\|bg-green\\\\|bg-red-5\\\\|bg-blue\\\\|bg-purple\\\\|bg-slate\\\\|bg-zinc\\\\|text-black\\\\s\\\\|bg-black\" \"$f\" 2>/dev/null && echo \"FILE: $f\"; done)",
       "Bash(npx prisma:*)",
       "Read(//tmp/**)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(find C:/Users/Pc/Desktop/fidelyai/components -name Coupon* -o -name coupon*)"
     ]
   }
 }

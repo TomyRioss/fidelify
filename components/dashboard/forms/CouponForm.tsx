@@ -87,24 +87,24 @@ export default function CouponForm({ couponId, defaultValues }: Props) {
   }
 
   return (
-    <div className="border border-neutral-200 bg-white p-6 flex flex-col gap-5">
+    <div className="border border-orange-200 bg-white p-6 flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="name">Nombre *</Label>
+        <Label htmlFor="name" className="text-neutral-700 font-medium">Nombre *</Label>
         <Input
           id="name"
           value={form.name}
           onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
           placeholder="Descuento bienvenida"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="type">Tipo *</Label>
+        <Label htmlFor="type" className="text-neutral-700 font-medium">Tipo *</Label>
         <Select
           value={form.type}
           onValueChange={(v) => setForm((f) => ({ ...f, type: v as "PERCENTAGE" | "FIXED_AMOUNT" }))}
         >
-          <SelectTrigger id="type">
+          <SelectTrigger id="type" className="bg-white border-neutral-300 text-neutral-900 focus:border-orange-400">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -114,7 +114,7 @@ export default function CouponForm({ couponId, defaultValues }: Props) {
         </Select>
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="value">Valor * {form.type === "PERCENTAGE" ? "(%)" : "($)"}</Label>
+        <Label htmlFor="value" className="text-neutral-700 font-medium">Valor * {form.type === "PERCENTAGE" ? "(%)" : "($)"}</Label>
         <Input
           id="value"
           type="number"
@@ -122,40 +122,41 @@ export default function CouponForm({ couponId, defaultValues }: Props) {
           value={form.value}
           onChange={(e) => setForm((f) => ({ ...f, value: e.target.value }))}
           placeholder={form.type === "PERCENTAGE" ? "10" : "500"}
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="expiresAt">Fecha de expiración</Label>
+        <Label htmlFor="expiresAt" className="text-neutral-700 font-medium">Fecha de expiración</Label>
         <Input
           id="expiresAt"
           type="date"
           value={form.expiresAt}
           onChange={(e) => setForm((f) => ({ ...f, expiresAt: e.target.value }))}
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="description">Descripción</Label>
+        <Label htmlFor="description" className="text-neutral-700 font-medium">Descripción</Label>
         <Input
           id="description"
           value={form.description}
           onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
           placeholder="Descripción opcional"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex items-center gap-3 pt-2">
         <Button
-          variant="outline"
-          className="border-neutral-300 text-neutral-700"
+          type="button"
+          className="bg-white border border-orange-300 text-neutral-700 hover:bg-orange-50 hover:text-orange-600"
           onClick={() => router.push("/dashboard/cupones")}
           disabled={loading}
         >
           Cancelar
         </Button>
         <Button
-          className="bg-neutral-900 text-white hover:bg-neutral-700"
+          type="button"
+          className="bg-orange-600 text-white hover:bg-orange-500"
           onClick={handleSubmit}
           disabled={loading}
         >

@@ -42,7 +42,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F5F4F0] px-4">
-      <div className="w-full rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm">
+      <div className="w-full rounded-2xl border border-orange-200 bg-white p-8 shadow-sm">
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">
@@ -64,7 +64,7 @@ export default function AdminLoginPage() {
               id="email"
               type="email"
               placeholder="admin@email.com"
-              className="pl-9 bg-stone-50 border-stone-200 text-neutral-900 placeholder:text-neutral-400 focus-visible:ring-neutral-400"
+              className="pl-9 bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -83,7 +83,7 @@ export default function AdminLoginPage() {
               id="password"
               type="password"
               placeholder="••••••••"
-              className="pl-9 bg-stone-50 border-stone-200 text-neutral-900 placeholder:text-neutral-400 focus-visible:ring-neutral-400"
+              className="pl-9 bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -101,7 +101,7 @@ export default function AdminLoginPage() {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full gap-2 bg-neutral-900 text-stone-50 hover:bg-neutral-700 transition-colors"
+          className="w-full gap-2 bg-orange-600 text-white hover:bg-orange-500 transition-colors"
         >
           <FiLogIn />
           {loading ? "Verificando..." : "Ingresar"}

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { hashPin } from "@/lib/services/tienda-service";
 
 async function getSessionData(): Promise<{ restaurantId: string; role: string } | null> {
   const session = await auth();
@@ -32,6 +33,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
         lastName: true,
         phone: true,
         email: true,
+        pin: true,
         points: true,
         visitCount: true,
         active: true,
@@ -75,6 +77,10 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       return NextResponse.json({ error: "El nombre es requerido." }, { status: 400 });
     }
 
+    const hashedPin = canManagePin && pin !== undefined
+      ? (pin ? await hashPin(pin) : null)
+      : undefined;
+
     const updated = await prisma.client.update({
       where: { id },
       data: {
@@ -82,7 +88,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
         lastName: lastName || "",
         phone: phone || null,
         email: email || null,
-        ...(canManagePin && pin !== undefined ? { pin: pin || null } : {}),
+        ...(hashedPin !== undefined ? { pin: hashedPin } : {}),
       },
       select: {
         id: true,

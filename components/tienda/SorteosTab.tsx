@@ -77,7 +77,7 @@ export default function SorteosTab({ clientId, clientPoints, onPointsChange }: P
 
   if (raffles.length === 0) {
     return (
-      <div className="rounded-xl border border-neutral-200 bg-white p-8 text-center">
+      <div className="rounded-xl border border-orange-200 bg-white p-8 text-center">
         <FiAward className="mx-auto mb-2 text-2xl text-neutral-400" />
         <p className="text-sm text-neutral-500">No hay sorteos activos.</p>
       </div>
@@ -94,14 +94,14 @@ export default function SorteosTab({ clientId, clientPoints, onPointsChange }: P
         return (
           <div
             key={raffle.id}
-            className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white p-4"
+            className="flex items-center justify-between rounded-xl border-2 border-orange-200 bg-white p-5 shadow-sm"
           >
             <div>
-              <p className="text-sm font-medium text-neutral-900">{raffle.name}</p>
+              <p className="text-base font-semibold text-neutral-900">{raffle.name}</p>
               {raffle.description && (
-                <p className="text-xs text-neutral-500">{raffle.description}</p>
+                <p className="mt-0.5 text-sm text-neutral-500">{raffle.description}</p>
               )}
-              <p className="mt-1 text-xs text-neutral-400">
+              <p className="mt-2 text-sm text-neutral-500">
                 Cierra: {new Date(raffle.closingDate).toLocaleDateString("es-AR")}
                 {raffle.participationType === "POINTS_COST" && raffle.pointsCost
                   ? ` · Costo: ${raffle.pointsCost} pts`
@@ -109,14 +109,14 @@ export default function SorteosTab({ clientId, clientPoints, onPointsChange }: P
               </p>
             </div>
             {raffle.alreadyEntered ? (
-              <span className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-500">
+              <span className="rounded-full bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-500">
                 Ya inscripto
               </span>
             ) : (
               <button
                 onClick={() => handleJoin(raffle)}
                 disabled={!canJoin || joining === raffle.id}
-                className="rounded-lg bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-lg bg-orange-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-orange-500 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {joining === raffle.id ? "Inscribiendo..." : "Participar"}
               </button>

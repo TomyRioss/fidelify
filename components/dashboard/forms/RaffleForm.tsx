@@ -96,76 +96,76 @@ export default function RaffleForm({ raffleId, defaultValues }: Props) {
   }
 
   return (
-    <div className="border border-neutral-200 bg-white p-6 flex flex-col gap-5">
+    <div className="border border-orange-200 bg-white p-6 flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="name">Nombre *</Label>
+        <Label htmlFor="name" className="text-neutral-700 font-medium">Nombre *</Label>
         <Input
           id="name"
           value={form.name}
           onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
           placeholder="Sorteo de Navidad"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="description">Descripción</Label>
+        <Label htmlFor="description" className="text-neutral-700 font-medium">Descripción</Label>
         <Input
           id="description"
           value={form.description}
           onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
           placeholder="Opcional"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="prizeFirst">1° Premio *</Label>
+        <Label htmlFor="prizeFirst" className="text-neutral-700 font-medium">1° Premio *</Label>
         <Input
           id="prizeFirst"
           value={form.prizeFirst}
           onChange={(e) => setForm((f) => ({ ...f, prizeFirst: e.target.value }))}
           placeholder="Cena para 2 personas"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="prizeSecond">2° Premio</Label>
+        <Label htmlFor="prizeSecond" className="text-neutral-700 font-medium">2° Premio</Label>
         <Input
           id="prizeSecond"
           value={form.prizeSecond}
           onChange={(e) => setForm((f) => ({ ...f, prizeSecond: e.target.value }))}
           placeholder="Opcional"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="prizeThird">3° Premio</Label>
+        <Label htmlFor="prizeThird" className="text-neutral-700 font-medium">3° Premio</Label>
         <Input
           id="prizeThird"
           value={form.prizeThird}
           onChange={(e) => setForm((f) => ({ ...f, prizeThird: e.target.value }))}
           placeholder="Opcional"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="closingDate">Fecha cierre *</Label>
+        <Label htmlFor="closingDate" className="text-neutral-700 font-medium">Fecha cierre *</Label>
         <Input
           id="closingDate"
           type="datetime-local"
           value={form.closingDate}
           onChange={(e) => setForm((f) => ({ ...f, closingDate: e.target.value }))}
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="participationType">Participación *</Label>
+        <Label htmlFor="participationType" className="text-neutral-700 font-medium">Participación *</Label>
         <Select
           value={form.participationType}
           onValueChange={(v) =>
             setForm((f) => ({ ...f, participationType: v as "FREE" | "POINTS_COST", pointsCost: "" }))
           }
         >
-          <SelectTrigger id="participationType">
+          <SelectTrigger id="participationType" className="bg-white border-neutral-300 text-neutral-900 focus:border-orange-400">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -176,7 +176,7 @@ export default function RaffleForm({ raffleId, defaultValues }: Props) {
       </div>
       {form.participationType === "POINTS_COST" && (
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="pointsCost">Costo en puntos *</Label>
+          <Label htmlFor="pointsCost" className="text-neutral-700 font-medium">Costo en puntos *</Label>
           <Input
             id="pointsCost"
             type="number"
@@ -184,21 +184,22 @@ export default function RaffleForm({ raffleId, defaultValues }: Props) {
             value={form.pointsCost}
             onChange={(e) => setForm((f) => ({ ...f, pointsCost: e.target.value }))}
             placeholder="100"
-            className="text-neutral-900"
+            className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
           />
         </div>
       )}
       <div className="flex items-center gap-3 pt-2">
         <Button
-          variant="outline"
-          className="border-neutral-300 text-neutral-700"
+          type="button"
+          className="bg-white border border-orange-300 text-neutral-700 hover:bg-orange-50 hover:text-orange-600"
           onClick={() => router.push("/dashboard/sorteos")}
           disabled={loading}
         >
           Cancelar
         </Button>
         <Button
-          className="bg-neutral-900 text-white hover:bg-neutral-700"
+          type="button"
+          className="bg-orange-600 text-white hover:bg-orange-500"
           onClick={handleSubmit}
           disabled={loading}
         >

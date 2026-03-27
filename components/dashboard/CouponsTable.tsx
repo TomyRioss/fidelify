@@ -73,7 +73,7 @@ export default function CouponsTable({
         )}
       </div>
 
-      <div className="border-t border-neutral-200 bg-white overflow-hidden w-full">
+      <div className="border-t border-orange-200 bg-white overflow-hidden w-full">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

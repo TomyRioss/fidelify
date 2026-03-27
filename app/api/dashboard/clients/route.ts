@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { hashPin } from "@/lib/services/tienda-service";
 
 async function getSessionData(): Promise<{ restaurantId: string; role: string } | null> {
   const session = await auth();
@@ -70,6 +71,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Ya existe un cliente con ese DNI." }, { status: 409 });
     }
 
+    const hashedPin = canManagePin && pin ? await hashPin(pin) : undefined;
+
     const client = await prisma.client.create({
       data: {
         restaurantId,
@@ -78,7 +81,7 @@ export async function POST(request: Request) {
         lastName: lastName || "",
         phone: phone || null,
         email: email || null,
-        ...(canManagePin && pin !== undefined ? { pin: pin || null } : {}),
+        ...(hashedPin !== undefined ? { pin: hashedPin } : {}),
       },
       select: {
         id: true,

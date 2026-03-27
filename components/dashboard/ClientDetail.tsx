@@ -70,7 +70,7 @@ export default function ClientDetail({ client: initial }: { client: Client }) {
   return (
     <div className="flex flex-col gap-6 w-full">
       <div className="flex items-center gap-3 px-6 pt-6">
-        <Button variant="outline" size="sm" onClick={() => router.back()} className="flex items-center gap-1.5">
+        <Button size="sm" onClick={() => router.back()} className="flex items-center gap-1.5 bg-white border border-orange-300 text-neutral-700 hover:bg-orange-50 hover:text-orange-600">
           <FiArrowLeft />
           Volver
         </Button>
@@ -80,7 +80,7 @@ export default function ClientDetail({ client: initial }: { client: Client }) {
       </div>
 
       {/* Info card */}
-      <div className="border border-neutral-200 bg-white overflow-hidden w-full">
+      <div className="border border-orange-200 bg-white overflow-hidden w-full">
         <div className="px-6 py-4 border-b border-neutral-100 bg-orange-50">
           <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Información del cliente</p>
         </div>
@@ -95,7 +95,7 @@ export default function ClientDetail({ client: initial }: { client: Client }) {
       </div>
 
       {/* Points card */}
-      <div className="border border-neutral-200 bg-white overflow-hidden w-full">
+      <div className="border border-orange-200 bg-white overflow-hidden w-full">
         <div className="px-6 py-4 border-b border-neutral-100 bg-orange-50">
           <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Puntos de fidelidad</p>
         </div>

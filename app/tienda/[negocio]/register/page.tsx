@@ -11,8 +11,8 @@ export default async function RegisterPage({ params }: { params: Promise<{ negoc
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-50">
-      <div className="w-full max-w-md rounded-lg border border-neutral-200 bg-white p-8 shadow-sm">
+    <div className="flex min-h-screen items-center justify-center bg-orange-50">
+      <div className="w-full max-w-md rounded-lg border border-orange-200 bg-white p-8 shadow-sm">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold text-neutral-900">{restaurant.name}</h1>
           <p className="mt-2 text-neutral-600">Creá tu cuenta para acumular puntos</p>

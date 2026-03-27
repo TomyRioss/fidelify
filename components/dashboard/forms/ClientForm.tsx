@@ -54,7 +54,7 @@ export default function ClientForm({ clientId, canManagePin, defaultValues }: Pr
             lastName: form.lastName || "",
             phone: form.phone || null,
             email: form.email || null,
-            ...(canManagePin ? { pin: form.pin || null } : {}),
+            ...(canManagePin && form.pin !== "" ? { pin: form.pin } : {}),
           }),
         });
         if (!res.ok) {
@@ -91,7 +91,7 @@ export default function ClientForm({ clientId, canManagePin, defaultValues }: Pr
   }
 
   return (
-    <div className="border border-neutral-200 bg-white p-6 flex flex-col gap-5">
+    <div className="border border-orange-200 bg-white p-6 flex flex-col gap-5">
       {!clientId && (
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="dni" className="text-neutral-700 font-medium">DNI *</Label>
@@ -100,7 +100,7 @@ export default function ClientForm({ clientId, canManagePin, defaultValues }: Pr
             value={form.dni}
             onChange={(e) => setForm((f) => ({ ...f, dni: e.target.value }))}
             placeholder="12345678"
-            className="text-neutral-900"
+            className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
           />
         </div>
       )}
@@ -111,7 +111,7 @@ export default function ClientForm({ clientId, canManagePin, defaultValues }: Pr
           value={form.firstName}
           onChange={(e) => setForm((f) => ({ ...f, firstName: e.target.value }))}
           placeholder="Juan"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
@@ -121,7 +121,7 @@ export default function ClientForm({ clientId, canManagePin, defaultValues }: Pr
           value={form.lastName}
           onChange={(e) => setForm((f) => ({ ...f, lastName: e.target.value }))}
           placeholder="Pérez"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
@@ -131,7 +131,7 @@ export default function ClientForm({ clientId, canManagePin, defaultValues }: Pr
           value={form.phone}
           onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
           placeholder="+54 11 0000-0000"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
@@ -142,7 +142,7 @@ export default function ClientForm({ clientId, canManagePin, defaultValues }: Pr
           value={form.email}
           onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
           placeholder="cliente@email.com"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       {canManagePin && (
@@ -155,12 +155,12 @@ export default function ClientForm({ clientId, canManagePin, defaultValues }: Pr
               value={form.pin}
               onChange={(e) => setForm((f) => ({ ...f, pin: e.target.value }))}
               placeholder="****"
-              className="text-neutral-900 pr-10"
+              className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400 pr-10"
             />
             <button
               type="button"
               onClick={() => setShowPin((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-800"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
             >
               {showPin ? <FiEyeOff size={16} /> : <FiEye size={16} />}
             </button>
@@ -169,15 +169,16 @@ export default function ClientForm({ clientId, canManagePin, defaultValues }: Pr
       )}
       <div className="flex items-center gap-3 pt-2">
         <Button
-          variant="outline"
-          className="border-2 border-neutral-800 bg-white text-neutral-900 hover:bg-neutral-800 hover:text-white"
+          type="button"
+          className="bg-white border border-orange-300 text-neutral-700 hover:bg-orange-50 hover:text-orange-600"
           onClick={() => router.push("/dashboard/clientes")}
           disabled={loading}
         >
           Cancelar
         </Button>
         <Button
-          className="bg-neutral-900 text-white hover:bg-neutral-700"
+          type="button"
+          className="bg-orange-600 text-white hover:bg-orange-500"
           onClick={handleSubmit}
           disabled={loading}
         >

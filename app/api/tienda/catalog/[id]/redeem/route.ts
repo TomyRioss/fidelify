@@ -45,8 +45,11 @@ export async function POST(
       return NextResponse.json({ error: "El negocio no tiene sucursales activas." }, { status: 400 });
     }
 
+    let redemptionId: string;
+    let redemptionCreatedAt: Date;
+
     await prisma.$transaction(async (tx) => {
-      await tx.redemption.create({
+      const redemption = await tx.redemption.create({
         data: {
           restaurantId: product.restaurantId,
           branchId: branch.id,
@@ -56,6 +59,8 @@ export async function POST(
           redeemedByClientId: clientId,
         },
       });
+      redemptionId = redemption.id;
+      redemptionCreatedAt = redemption.createdAt;
       await tx.pointsLedger.create({
         data: {
           restaurantId: product.restaurantId,
@@ -71,7 +76,15 @@ export async function POST(
       });
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      redemption: {
+        id: redemptionId!,
+        productName: product.name,
+        pointsSpent: product.pointCost,
+        createdAt: redemptionCreatedAt!,
+      },
+    });
   } catch (err) {
     console.error("[api/tienda/catalog/[id]/redeem POST] Unexpected error:", err);
     return NextResponse.json({ error: "Error interno del servidor." }, { status: 500 });

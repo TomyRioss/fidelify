@@ -71,11 +71,11 @@ export default function StatsCards({ stats }: { stats: Stats }) {
       {cards.map(({ label, value, icon: Icon, change, sub }) => (
         <div
           key={label}
-          className="flex flex-col gap-3 rounded-xl border border-neutral-200 bg-white p-5"
+          className="flex flex-col gap-3 rounded-xl border border-orange-200 bg-white p-5"
         >
           <div className="flex items-center justify-between">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-100">
-              <Icon className="text-lg text-neutral-700" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-50">
+              <Icon className="text-lg text-orange-600" />
             </div>
             <Badge value={change} />
           </div>

@@ -69,7 +69,7 @@ export default function AssignCouponForm({ couponId, couponName, clients }: Prop
   }
 
   return (
-    <div className="border border-neutral-200 bg-white p-6 flex flex-col gap-5">
+    <div className="border border-orange-200 bg-white p-6 flex flex-col gap-5">
       <div className="flex flex-col gap-1">
         <p className="text-sm text-neutral-500">
           Cupón: <span className="font-medium text-neutral-900">{couponName}</span>
@@ -85,10 +85,10 @@ export default function AssignCouponForm({ couponId, couponName, clients }: Prop
             value={clientSearch}
             onChange={(e) => setClientSearch(e.target.value)}
             placeholder="Buscar cliente..."
-            className="pl-9 text-neutral-900"
+            className="pl-9 bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
           />
         </div>
-        <div className="border border-neutral-200 max-h-48 overflow-y-auto">
+        <div className="border border-orange-200 max-h-48 overflow-y-auto">
           {filteredClients.length === 0 ? (
             <p className="px-3 py-2 text-sm text-neutral-400">Sin resultados.</p>
           ) : (
@@ -98,8 +98,8 @@ export default function AssignCouponForm({ couponId, couponName, clients }: Prop
                 onClick={() => setSelectedClientId(c.id)}
                 className={`w-full text-left px-3 py-2 text-sm transition-colors ${
                   selectedClientId === c.id
-                    ? "bg-neutral-900 text-white"
-                    : "hover:bg-neutral-50 text-neutral-800"
+                    ? "bg-orange-600 text-white"
+                    : "hover:bg-orange-50 text-neutral-800"
                 }`}
               >
                 {c.firstName} {c.lastName}{" "}
@@ -111,15 +111,16 @@ export default function AssignCouponForm({ couponId, couponName, clients }: Prop
       </div>
       <div className="flex items-center gap-3 pt-2">
         <Button
-          variant="outline"
-          className="border-neutral-300 text-neutral-700"
+          type="button"
+          className="bg-white border border-orange-300 text-neutral-700 hover:bg-orange-50 hover:text-orange-600"
           onClick={() => router.push("/dashboard/cupones")}
           disabled={loading}
         >
           Cancelar
         </Button>
         <Button
-          className="bg-neutral-900 text-white hover:bg-neutral-700"
+          type="button"
+          className="bg-orange-600 text-white hover:bg-orange-500"
           onClick={handleAssign}
           disabled={loading || !activeBranch}
         >

@@ -15,7 +15,7 @@ export default function ConfiguracionLayout({ children }: { children: ReactNode 
 
   return (
     <div className="flex h-full w-full">
-      <aside className="w-48 shrink-0 border-r border-neutral-200 bg-white flex flex-col py-6 gap-1 px-3">
+      <aside className="w-48 shrink-0 border-r border-orange-200 bg-white flex flex-col py-6 gap-1 px-3">
         {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
           const active = pathname.startsWith(href);
           return (

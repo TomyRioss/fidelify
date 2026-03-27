@@ -57,8 +57,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "El nombre es requerido" }, { status: 400 });
     }
 
-    const branch = await prisma.branch.create({
-      data: { restaurantId: user.restaurantId, name, address, phone },
+    const branch = await prisma.$transaction(async (tx) => {
+      const created = await tx.branch.create({
+        data: { restaurantId: user.restaurantId, name, address, phone },
+      });
+      const owners = await tx.user.findMany({
+        where: { restaurantId: user.restaurantId, role: "OWNER" },
+        select: { id: true },
+      });
+      await tx.userBranch.createMany({
+        data: owners.map((o) => ({ userId: o.id, branchId: created.id })),
+        skipDuplicates: true,
+      });
+      return created;
     });
 
     return NextResponse.json(branch, { status: 201 });

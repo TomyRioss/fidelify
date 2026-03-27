@@ -64,7 +64,7 @@ export default function RafflesTable({
             placeholder="Buscar sorteo..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 bg-white border-neutral-200 text-neutral-900 placeholder:text-neutral-400"
+            className="pl-9 bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400"
           />
         </div>
         {canManage && (
@@ -81,7 +81,7 @@ export default function RafflesTable({
       <div className="w-full overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-y border-neutral-200 bg-neutral-50 text-neutral-500 text-xs uppercase tracking-wide">
+            <tr className="border-y border-orange-200 bg-orange-50 text-neutral-500 text-xs uppercase tracking-wide">
               <th className="px-6 py-3 text-left font-medium">Nombre</th>
               <th className="px-6 py-3 text-left font-medium">1° Premio</th>
               <th className="px-6 py-3 text-left font-medium">2° Premio</th>
@@ -104,7 +104,7 @@ export default function RafflesTable({
               filtered.map((r) => {
                 const prize = parsePrize(r.prize);
                 return (
-                  <tr key={r.id} className="hover:bg-neutral-50 transition-colors">
+                  <tr key={r.id} className="hover:bg-orange-50 transition-colors">
                     <td className="px-6 py-4 font-medium text-neutral-900">
                       <div>{r.name}</div>
                       {r.description && (

@@ -196,7 +196,7 @@ export default function CreateSurveyDialog({ open, onClose, onCreated }: Props) 
               </div>
 
               {questions.map((q, idx) => (
-                <div key={idx} className="flex flex-col gap-2 rounded border border-neutral-200 p-3">
+                <div key={idx} className="flex flex-col gap-2 rounded border border-orange-200 p-3">
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-xs font-medium text-neutral-500">Pregunta {idx + 1}</span>
                     {questions.length > 1 && (
@@ -250,14 +250,14 @@ export default function CreateSurveyDialog({ open, onClose, onCreated }: Props) 
               variant="outline"
               onClick={handleClose}
               disabled={loading}
-              className="border-neutral-300 text-neutral-700"
+              className="bg-white border border-orange-300 text-neutral-700 hover:bg-orange-50 hover:text-orange-600"
             >
               Cancelar
             </Button>
             <Button
               type="submit"
               disabled={loading}
-              className="bg-neutral-900 text-white hover:bg-neutral-800"
+              className="bg-orange-600 text-white hover:bg-orange-500"
             >
               {loading ? "Creando..." : "Crear encuesta"}
             </Button>

@@ -62,48 +62,49 @@ export default function BranchForm({ restaurantId, branchId, defaultValues }: Pr
   }
 
   return (
-    <div className="border border-neutral-200 bg-white p-6 flex flex-col gap-5">
+    <div className="border border-orange-200 bg-white p-6 flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="name">Nombre *</Label>
+        <Label htmlFor="name" className="text-neutral-700 font-medium">Nombre *</Label>
         <Input
           id="name"
           value={form.name}
           onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
           placeholder="Sucursal Centro"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="address">Dirección</Label>
+        <Label htmlFor="address" className="text-neutral-700 font-medium">Dirección</Label>
         <Input
           id="address"
           value={form.address}
           onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
           placeholder="Av. Corrientes 1234"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="phone">Teléfono</Label>
+        <Label htmlFor="phone" className="text-neutral-700 font-medium">Teléfono</Label>
         <Input
           id="phone"
           value={form.phone}
           onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
           placeholder="+54 11 0000-0000"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex items-center gap-3 pt-2">
         <Button
-          variant="outline"
-          className="border-neutral-300 text-neutral-700"
+          type="button"
+          className="bg-white border border-orange-300 text-neutral-700 hover:bg-orange-50 hover:text-orange-600"
           onClick={() => router.push("/admin/dashboard")}
           disabled={loading}
         >
           Cancelar
         </Button>
         <Button
-          className="bg-neutral-900 text-white hover:bg-neutral-700"
+          type="button"
+          className="bg-orange-600 text-white hover:bg-orange-500"
           onClick={handleSubmit}
           disabled={loading}
         >

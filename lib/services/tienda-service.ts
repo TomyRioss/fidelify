@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
 export async function getRestaurantBySlug(slug: string) {
@@ -15,16 +14,15 @@ export async function getClientByDniAndPin(restaurantId: string, dni: string, pi
 
   if (!client || !client.pin) return null;
 
-  const isValid = await bcrypt.compare(pin, client.pin);
-  return isValid ? client : null;
+  return client.pin === pin ? client : null;
 }
 
 export async function hashPin(pin: string): Promise<string> {
-  return await bcrypt.hash(pin, 10);
+  return pin;
 }
 
-export async function verifyPin(pin: string, hash: string): Promise<boolean> {
-  return await bcrypt.compare(pin, hash);
+export async function verifyPin(pin: string, stored: string): Promise<boolean> {
+  return pin === stored;
 }
 
 export async function getClientByIdAndRestaurant(restaurantId: string, clientId: string) {

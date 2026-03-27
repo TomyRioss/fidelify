@@ -6,6 +6,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 interface Props {
   negocio: string;
@@ -16,6 +17,7 @@ export default function LoginForm({ negocio }: Props) {
   const [loading, setLoading] = useState(false);
   const [dni, setDni] = useState("");
   const [pin, setPin] = useState("");
+  const [showPin, setShowPin] = useState(false);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -59,17 +61,26 @@ export default function LoginForm({ negocio }: Props) {
       </div>
       <div className="space-y-2">
         <Label htmlFor="pin" className="text-neutral-700 font-medium">PIN</Label>
-        <Input
-          id="pin"
-          type="password"
-          placeholder="4-6 dígitos"
-          value={pin}
-          onChange={(e) => setPin(e.target.value)}
-          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400"
-          maxLength={6}
-          pattern="\d{4,6}"
-          required
-        />
+        <div className="relative">
+          <Input
+            id="pin"
+            type={showPin ? "text" : "password"}
+            placeholder="4-6 dígitos"
+            value={pin}
+            onChange={(e) => setPin(e.target.value)}
+            className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 pr-10"
+            maxLength={6}
+            pattern="\d{4,6}"
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPin((v) => !v)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600"
+          >
+            {showPin ? <FiEyeOff className="text-base" /> : <FiEye className="text-base" />}
+          </button>
+        </div>
       </div>
       <button
         type="submit"

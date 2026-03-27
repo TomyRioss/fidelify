@@ -70,7 +70,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { title, description, type, externalUrl, questions } = body;
+    const { title, description, type, externalUrl, questions, rewardPoints } = body;
 
     if (!title || !type) {
       return NextResponse.json({ error: "Título y tipo son requeridos." }, { status: 400 });
@@ -105,12 +105,23 @@ export async function POST(request: Request) {
         },
       });
 
+      if (typeof rewardPoints === "number" && rewardPoints > 0) {
+        await tx.surveyAction.create({
+          data: {
+            surveyId: created.id,
+            actionType: "ADD_POINTS",
+            payload: { points: rewardPoints },
+            order: 0,
+          },
+        });
+      }
+
       if (type === "INTERNAL" && Array.isArray(questions) && questions.length > 0) {
         const questionsData = questions.map((q: { text: string; type: string; options?: string }, idx: number) => ({
           surveyId: created.id,
           text: q.text,
           type: q.type as any,
-          options: q.options ? JSON.parse(JSON.stringify(q.options.split(",").map((o: string) => o.trim()))) : null,
+          options: Array.isArray(q.options) ? q.options : (q.options ? q.options.split(",").map((o: string) => o.trim()) : null),
           order: idx + 1,
         }));
         await tx.surveyQuestion.createMany({ data: questionsData });

@@ -30,6 +30,7 @@ export default function SurveyForm() {
   const [type, setType] = useState<"INTERNAL" | "EXTERNAL">("INTERNAL");
   const [externalUrl, setExternalUrl] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [rewardPoints, setRewardPoints] = useState<number>(0);
   const [loading, setLoading] = useState(false);
 
   function addQuestion() {
@@ -62,6 +63,7 @@ export default function SurveyForm() {
         description: description.trim() || null,
         type,
         externalUrl: type === "EXTERNAL" ? externalUrl.trim() : null,
+        rewardPoints: rewardPoints > 0 ? rewardPoints : 0,
         questions: type === "INTERNAL"
           ? questions.map((q) => ({
               text: q.text,
@@ -93,31 +95,42 @@ export default function SurveyForm() {
   }
 
   return (
-    <div className="border border-neutral-200 bg-white p-6 flex flex-col gap-5">
+    <div className="border border-orange-200 bg-white p-6 flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="title">Título *</Label>
+        <Label htmlFor="title" className="text-neutral-700 font-medium">Título *</Label>
         <Input
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Encuesta de satisfacción"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="description">Descripción</Label>
+        <Label htmlFor="description" className="text-neutral-700 font-medium">Descripción</Label>
         <Input
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Opcional"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="surveyType">Tipo</Label>
+        <Label htmlFor="rewardPoints" className="text-neutral-700 font-medium">Puntos por completar</Label>
+        <Input
+          id="rewardPoints"
+          type="number"
+          min={0}
+          value={rewardPoints}
+          onChange={(e) => setRewardPoints(Math.max(0, parseInt(e.target.value) || 0))}
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
+        />
+      </div>
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="surveyType" className="text-neutral-700 font-medium">Tipo</Label>
         <Select value={type} onValueChange={(v) => setType(v as "INTERNAL" | "EXTERNAL")}>
-          <SelectTrigger id="surveyType">
+          <SelectTrigger id="surveyType" className="bg-white border-neutral-300 text-neutral-900 focus:border-orange-400">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -128,13 +141,13 @@ export default function SurveyForm() {
       </div>
       {type === "EXTERNAL" && (
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="externalUrl">URL externa *</Label>
+          <Label htmlFor="externalUrl" className="text-neutral-700 font-medium">URL externa *</Label>
           <Input
             id="externalUrl"
             value={externalUrl}
             onChange={(e) => setExternalUrl(e.target.value)}
             placeholder="https://forms.google.com/..."
-            className="text-neutral-900"
+            className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
           />
         </div>
       )}
@@ -145,23 +158,23 @@ export default function SurveyForm() {
             <button
               type="button"
               onClick={addQuestion}
-              className="flex items-center gap-1 text-xs text-neutral-600 hover:text-neutral-900 border border-neutral-200 px-2 py-1 hover:bg-neutral-50 transition-colors"
+              className="flex items-center gap-1 text-xs text-orange-600 hover:text-orange-700 border border-orange-300 px-2 py-1 hover:bg-orange-50 transition-colors"
             >
               <FiPlus className="text-xs" />
               Agregar pregunta
             </button>
           </div>
           {questions.map((q, i) => (
-            <div key={i} className="border border-neutral-200 p-4 flex flex-col gap-3">
+            <div key={i} className="border border-orange-200 p-4 flex flex-col gap-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 flex flex-col gap-1.5">
-                  <Label htmlFor={`q-text-${i}`}>Pregunta {i + 1}</Label>
+                  <Label htmlFor={`q-text-${i}`} className="text-neutral-700 font-medium">Pregunta {i + 1}</Label>
                   <Input
                     id={`q-text-${i}`}
                     value={q.text}
                     onChange={(e) => updateQuestion(i, "text", e.target.value)}
                     placeholder="Texto de la pregunta"
-                    className="text-neutral-900"
+                    className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
                   />
                 </div>
                 <button
@@ -173,12 +186,12 @@ export default function SurveyForm() {
                 </button>
               </div>
               <div className="flex flex-col gap-1.5">
-                <Label htmlFor={`q-type-${i}`}>Tipo de respuesta</Label>
+                <Label htmlFor={`q-type-${i}`} className="text-neutral-700 font-medium">Tipo de respuesta</Label>
                 <Select
                   value={q.type}
                   onValueChange={(v) => v && updateQuestion(i, "type", v)}
                 >
-                  <SelectTrigger id={`q-type-${i}`}>
+                  <SelectTrigger id={`q-type-${i}`} className="bg-white border-neutral-300 text-neutral-900 focus:border-orange-400">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -191,13 +204,13 @@ export default function SurveyForm() {
               </div>
               {q.type === "MULTIPLE_CHOICE" && (
                 <div className="flex flex-col gap-1.5">
-                  <Label htmlFor={`q-options-${i}`}>Opciones (separadas por coma)</Label>
+                  <Label htmlFor={`q-options-${i}`} className="text-neutral-700 font-medium">Opciones (separadas por coma)</Label>
                   <Input
                     id={`q-options-${i}`}
                     value={q.options}
                     onChange={(e) => updateQuestion(i, "options", e.target.value)}
                     placeholder="Opción A, Opción B, Opción C"
-                    className="text-neutral-900"
+                    className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
                   />
                 </div>
               )}
@@ -210,15 +223,16 @@ export default function SurveyForm() {
       )}
       <div className="flex items-center gap-3 pt-2">
         <Button
-          variant="outline"
-          className="border-neutral-300 text-neutral-700"
+          type="button"
+          className="bg-white border border-orange-300 text-neutral-700 hover:bg-orange-50 hover:text-orange-600"
           onClick={() => router.push("/dashboard/encuestas")}
           disabled={loading}
         >
           Cancelar
         </Button>
         <Button
-          className="bg-neutral-900 text-white hover:bg-neutral-700"
+          type="button"
+          className="bg-orange-600 text-white hover:bg-orange-500"
           onClick={handleSubmit}
           disabled={loading}
         >

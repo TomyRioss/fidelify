@@ -33,7 +33,7 @@ export default function SurveysPanel({ initialData, role }: Props) {
         {canCreate && (
           <Button
             onClick={() => router.push("/dashboard/encuestas/new")}
-            className="ml-auto bg-neutral-900 text-white hover:bg-neutral-800 flex items-center gap-2"
+            className="ml-auto bg-orange-600 text-white hover:bg-orange-500 flex items-center gap-2"
           >
             <FiPlus size={16} />
             Nueva encuesta
@@ -47,9 +47,9 @@ export default function SurveysPanel({ initialData, role }: Props) {
           <p className="text-sm">No hay encuestas registradas.</p>
         </div>
       ) : (
-        <div className="w-full overflow-x-auto rounded border border-neutral-200">
+        <div className="w-full overflow-x-auto rounded border border-orange-200">
           <table className="w-full text-sm text-neutral-800">
-            <thead className="bg-neutral-100 text-neutral-500 text-xs uppercase tracking-wide">
+            <thead className="bg-orange-50 text-neutral-500 text-xs uppercase tracking-wide">
               <tr>
                 <th className="px-4 py-3 text-left font-medium">Título</th>
                 <th className="px-4 py-3 text-left font-medium">Tipo</th>
@@ -61,7 +61,7 @@ export default function SurveysPanel({ initialData, role }: Props) {
             </thead>
             <tbody>
               {surveys.map((s) => (
-                <tr key={s.id} className="border-t border-neutral-200 hover:bg-neutral-50">
+                <tr key={s.id} className="border-t border-orange-100 hover:bg-orange-50">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       {s.type === "EXTERNAL" ? (
@@ -88,7 +88,7 @@ export default function SurveysPanel({ initialData, role }: Props) {
                     <span
                       className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${
                         s.active
-                          ? "bg-neutral-900 text-white"
+                          ? "bg-orange-600 text-white"
                           : "bg-neutral-100 text-neutral-400"
                       }`}
                     >

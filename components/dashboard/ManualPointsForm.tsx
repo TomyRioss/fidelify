@@ -84,8 +84,8 @@ export default function ManualPointsForm() {
   return (
     <div className="flex flex-col gap-6 w-full">
       {/* Search */}
-      <div className="border border-neutral-200 bg-white overflow-hidden w-full">
-        <div className="px-6 py-4 border-b border-neutral-200">
+      <div className="border border-orange-200 bg-white overflow-hidden w-full">
+        <div className="px-6 py-4 border-b border-orange-100">
           <h2 className="text-sm font-semibold text-neutral-800">Buscar cliente</h2>
         </div>
         <form onSubmit={handleSearch} className="px-6 py-4 flex flex-col gap-4 sm:flex-row sm:items-end">
@@ -102,7 +102,7 @@ export default function ManualPointsForm() {
           <Button
             type="submit"
             disabled={searching || !dni.trim()}
-            className="bg-neutral-900 text-white hover:bg-neutral-700 flex items-center gap-2"
+            className="bg-orange-600 text-white hover:bg-orange-500 flex items-center gap-2"
           >
             <FiSearch size={16} />
             {searching ? "Buscando..." : "Buscar"}
@@ -112,8 +112,8 @@ export default function ManualPointsForm() {
 
       {/* Client info + add points */}
       {client && (
-        <div className="border border-neutral-200 bg-white overflow-hidden w-full">
-          <div className="px-6 py-4 border-b border-neutral-200 flex items-center justify-between">
+        <div className="border border-orange-200 bg-white overflow-hidden w-full">
+          <div className="px-6 py-4 border-b border-orange-100 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-neutral-800">Cliente encontrado</h2>
             <button
               onClick={handleReset}
@@ -147,7 +147,7 @@ export default function ManualPointsForm() {
               <Button
                 type="submit"
                 disabled={submitting || !pointsInput}
-                className="bg-neutral-900 text-white hover:bg-neutral-700 flex items-center gap-2"
+                className="bg-orange-600 text-white hover:bg-orange-500 flex items-center gap-2"
               >
                 <FiPlus size={16} />
                 {submitting ? "Sumando..." : "Sumar puntos"}

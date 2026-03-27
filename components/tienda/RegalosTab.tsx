@@ -64,7 +64,7 @@ export default function RegalosTab({ clientId }: Props) {
 
   if (milestones.length === 0) {
     return (
-      <div className="rounded-xl border border-neutral-200 bg-white p-8 text-center">
+      <div className="rounded-xl border border-orange-200 bg-white p-8 text-center">
         <FiGift className="mx-auto mb-2 text-2xl text-neutral-400" />
         <p className="text-sm text-neutral-500">No hay hitos de regalo configurados.</p>
       </div>
@@ -76,26 +76,26 @@ export default function RegalosTab({ clientId }: Props) {
       {milestones.map((m) => (
         <div
           key={m.id}
-          className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white p-4"
+          className="flex items-center justify-between rounded-xl border-2 border-orange-200 bg-white p-5 shadow-sm"
         >
           <div>
-            <p className="text-sm font-medium text-neutral-900">{m.description}</p>
-            <p className="text-xs text-neutral-500">Requiere {m.visitTrigger} visitas · {m.giftType}</p>
+            <p className="text-base font-semibold text-neutral-900">{m.description}</p>
+            <p className="mt-0.5 text-sm text-neutral-500">Requiere {m.visitTrigger} visitas · {m.giftType}</p>
           </div>
           {m.delivered ? (
-            <span className="rounded-full bg-neutral-100 px-3 py-1 text-xs font-medium text-neutral-500">
+            <span className="rounded-full bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-500">
               Entregado
             </span>
           ) : m.eligible ? (
             <button
               onClick={() => handleDeliver(m.id)}
               disabled={delivering === m.id}
-              className="rounded-lg bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-neutral-700 disabled:opacity-50"
+              className="rounded-lg bg-orange-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-orange-500 disabled:opacity-50"
             >
               {delivering === m.id ? "Entregando..." : "Entregar"}
             </button>
           ) : (
-            <span className="text-xs text-neutral-400">No elegible</span>
+            <span className="text-sm text-neutral-400">No elegible</span>
           )}
         </div>
       ))}

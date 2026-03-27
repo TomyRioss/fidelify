@@ -71,29 +71,29 @@ export default function CatalogProductForm({ productId, defaultValues }: Props) 
   }
 
   return (
-    <div className="border border-neutral-200 bg-white p-6 flex flex-col gap-5">
+    <div className="border border-orange-200 bg-white p-6 flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="name">Nombre *</Label>
+        <Label htmlFor="name" className="text-neutral-700 font-medium">Nombre *</Label>
         <Input
           id="name"
           value={form.name}
           onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
           placeholder="Café gratis"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="description">Descripción</Label>
+        <Label htmlFor="description" className="text-neutral-700 font-medium">Descripción</Label>
         <Input
           id="description"
           value={form.description}
           onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
           placeholder="Descripción opcional"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="pointCost">Costo en puntos *</Label>
+        <Label htmlFor="pointCost" className="text-neutral-700 font-medium">Costo en puntos *</Label>
         <Input
           id="pointCost"
           type="number"
@@ -101,20 +101,21 @@ export default function CatalogProductForm({ productId, defaultValues }: Props) 
           value={form.pointCost}
           onChange={(e) => setForm((f) => ({ ...f, pointCost: e.target.value }))}
           placeholder="100"
-          className="text-neutral-900"
+          className="bg-white border-neutral-300 text-neutral-900 placeholder:text-neutral-400 focus-visible:border-orange-400"
         />
       </div>
       <div className="flex items-center gap-3 pt-2">
         <Button
-          variant="outline"
-          className="border-neutral-300 text-neutral-700"
+          type="button"
+          className="bg-white border border-orange-300 text-neutral-700 hover:bg-orange-50 hover:text-orange-600"
           onClick={() => router.push("/dashboard/puntos")}
           disabled={loading}
         >
           Cancelar
         </Button>
         <Button
-          className="bg-neutral-900 text-white hover:bg-neutral-700"
+          type="button"
+          className="bg-orange-600 text-white hover:bg-orange-500"
           onClick={handleSubmit}
           disabled={loading}
         >

@@ -23,7 +23,7 @@ import {
   FiShoppingCart,
   FiMapPin,
 } from "react-icons/fi";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useBranch } from "@/lib/branch-context";
 
 const ADMIN_ITEMS = [
@@ -47,6 +47,9 @@ const LOYALTY_ITEMS = [
 
 export default function BusinessSidebar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const userRole = (session?.user as { role?: string })?.role;
+  const canManageBranches = userRole === "OWNER" || userRole === "ADMIN";
   const { restaurantName, activeBranch, branches, setActiveBranch } = useBranch();
   const [branchOpen, setBranchOpen] = useState(false);
   const branchRef = useRef<HTMLDivElement>(null);
@@ -75,8 +78,12 @@ export default function BusinessSidebar() {
 
   return (
     <aside className="flex h-screen w-60 flex-col border-r border-neutral-200 bg-white">
-      <div className="flex flex-col justify-center border-b border-neutral-100 px-5 py-3">
-        <span className="text-sm font-semibold text-neutral-900 leading-tight truncate">{restaurantName ?? "Mi Negocio"}</span>
+      <div className="flex flex-col justify-center border-b border-neutral-100 px-5 py-4">
+        {restaurantName ? (
+          <span className="text-xl font-bold text-neutral-900 leading-tight truncate">{restaurantName}</span>
+        ) : (
+          <div className="h-6 w-24 animate-pulse rounded bg-neutral-200" />
+        )}
         {branches.length > 0 && (
           <div className="relative mt-1" ref={branchRef}>
             <button
@@ -101,6 +108,16 @@ export default function BusinessSidebar() {
                     {b.name}
                   </button>
                 ))}
+                {canManageBranches && (
+                  <Link
+                    href="/dashboard/configuracion/sucursales/new"
+                    onClick={() => setBranchOpen(false)}
+                    className="flex w-full items-center gap-2 border-t border-orange-100 px-3 py-2 text-xs text-orange-600 transition-colors hover:bg-orange-50"
+                  >
+                    <FiPlusCircle className="shrink-0" />
+                    Añadir sucursal
+                  </Link>
+                )}
               </div>
             )}
           </div>
