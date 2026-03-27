@@ -59,7 +59,7 @@ export async function POST(request: Request) {
 
     const branch = await prisma.$transaction(async (tx) => {
       const created = await tx.branch.create({
-        data: { restaurantId: user.restaurantId, name, address, phone },
+        data: { restaurantId: user.restaurantId!, name, address: address ?? undefined, phone: phone ?? undefined },
       });
       const owners = await tx.user.findMany({
         where: { restaurantId: user.restaurantId, role: "OWNER" },

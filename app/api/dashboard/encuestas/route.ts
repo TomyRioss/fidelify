@@ -121,7 +121,7 @@ export async function POST(request: Request) {
           surveyId: created.id,
           text: q.text,
           type: q.type as any,
-          options: Array.isArray(q.options) ? q.options : (q.options ? q.options.split(",").map((o: string) => o.trim()) : null),
+          options: Array.isArray(q.options) ? q.options : (q.options ? q.options.split(",").map((o: string) => o.trim()) : undefined),
           order: idx + 1,
         }));
         await tx.surveyQuestion.createMany({ data: questionsData });
