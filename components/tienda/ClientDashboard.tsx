@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FiShoppingBag, FiGift, FiTag, FiClipboard, FiAward } from "react-icons/fi";
+import { FiShoppingBag, FiGift, FiTag, FiClipboard, FiAward, FiClock } from "react-icons/fi";
 import PuntosStore from "./PuntosStore";
 import RegalosTab from "./RegalosTab";
 import CuponesTab from "./CuponesTab";
@@ -39,9 +40,18 @@ export default function ClientDashboard({ client, negocio }: Props) {
           </h1>
           <p className="mt-1 text-neutral-600">DNI: {client.dni} · Visitas: {client.visitCount}</p>
         </div>
-        <div className="rounded-lg border border-orange-200 bg-orange-50 px-6 py-3 text-center">
-          <p className="text-2xl font-bold text-orange-600">{points}</p>
-          <p className="text-sm text-neutral-700">puntos</p>
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/tienda/${negocio}/${client.id}/historial`}
+            className="flex flex-col items-center gap-1 text-orange-500 hover:text-orange-600 transition-colors"
+          >
+            <FiClock size={22} />
+            <span className="text-xs font-medium">Historial</span>
+          </Link>
+          <div className="rounded-lg border border-orange-200 bg-orange-50 px-6 py-3 text-center">
+            <p className="text-2xl font-bold text-orange-600">{points}</p>
+            <p className="text-sm text-neutral-700">puntos</p>
+          </div>
         </div>
       </div>
 

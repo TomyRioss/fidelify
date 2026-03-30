@@ -18,9 +18,7 @@ import {
   FiUsers,
   FiUser,
   FiBriefcase,
-  FiPackage,
-  FiList,
-  FiShoppingCart,
+  FiDollarSign,
   FiMapPin,
 } from "react-icons/fi";
 import { signOut, useSession } from "next-auth/react";
@@ -31,11 +29,6 @@ const ADMIN_ITEMS = [
   { label: "Empleados", href: "/dashboard/empleados", icon: FiUsers },
 ];
 
-const RECURSOS_ITEMS = [
-  { label: "Inventario", href: "/dashboard/recursos/inventario", icon: FiList },
-  { label: "Punto de venta", href: "/dashboard/recursos/pos", icon: FiShoppingCart },
-];
-
 const LOYALTY_ITEMS = [
   { label: "Tienda de puntos", href: "/dashboard/puntos", icon: FiShoppingBag },
   { label: "Cupones", href: "/dashboard/cupones", icon: FiTag },
@@ -43,6 +36,7 @@ const LOYALTY_ITEMS = [
   { label: "Encuestas", href: "/dashboard/encuestas", icon: FiClipboard },
   { label: "Sorteos", href: "/dashboard/sorteos", icon: FiAward },
   { label: "Añadir puntos manualmente", href: "/dashboard/puntos/manual", icon: FiPlusCircle },
+  { label: "Registrar venta", href: "/dashboard/puntos/registrar-venta", icon: FiDollarSign },
 ];
 
 export default function BusinessSidebar() {
@@ -58,9 +52,6 @@ export default function BusinessSidebar() {
   );
   const [loyaltyOpen, setLoyaltyOpen] = useState(
     LOYALTY_ITEMS.some((i) => pathname.startsWith(i.href))
-  );
-  const [recursosOpen, setRecursosOpen] = useState(
-    RECURSOS_ITEMS.some((i) => pathname.startsWith(i.href))
   );
 
   useEffect(() => {
@@ -199,46 +190,6 @@ export default function BusinessSidebar() {
             <div className="mt-1 flex flex-col gap-0.5 pl-4">
               {LOYALTY_ITEMS.map(({ label, href, icon: Icon }) => {
                 const active = pathname === href;
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors ${
-                      active
-                        ? "bg-neutral-100 font-medium text-neutral-900"
-                        : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
-                    }`}
-                  >
-                    <Icon className="shrink-0 text-base" />
-                    {label}
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Recursos – dropdown */}
-        <div>
-          <button
-            onClick={() => setRecursosOpen((o) => !o)}
-            className={`flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm transition-colors ${
-              recursosOpen || RECURSOS_ITEMS.some((i) => pathname.startsWith(i.href))
-                ? "bg-neutral-100 font-medium text-neutral-900"
-                : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900"
-            }`}
-          >
-            <FiPackage className="shrink-0 text-lg" />
-            <span className="flex-1 text-left">Recursos</span>
-            <FiChevronDown
-              className={`shrink-0 text-base transition-transform duration-200 ${recursosOpen ? "rotate-180" : ""}`}
-            />
-          </button>
-
-          {recursosOpen && (
-            <div className="mt-1 flex flex-col gap-0.5 pl-4">
-              {RECURSOS_ITEMS.map(({ label, href, icon: Icon }) => {
-                const active = pathname.startsWith(href);
                 return (
                   <Link
                     key={href}
