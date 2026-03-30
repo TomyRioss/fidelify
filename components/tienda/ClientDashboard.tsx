@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FiShoppingBag, FiGift, FiTag, FiClipboard, FiAward } from "react-icons/fi";
 import PuntosStore from "./PuntosStore";
@@ -23,8 +24,10 @@ interface Props {
 }
 
 export default function ClientDashboard({ client, negocio }: Props) {
+  const [points, setPoints] = useState(client.points);
+
   function updatePoints(newPoints: number) {
-    window.location.reload();
+    setPoints(newPoints);
   }
 
   return (
@@ -37,7 +40,7 @@ export default function ClientDashboard({ client, negocio }: Props) {
           <p className="mt-1 text-neutral-600">DNI: {client.dni} · Visitas: {client.visitCount}</p>
         </div>
         <div className="rounded-lg border border-orange-200 bg-orange-50 px-6 py-3 text-center">
-          <p className="text-2xl font-bold text-orange-600">{client.points}</p>
+          <p className="text-2xl font-bold text-orange-600">{points}</p>
           <p className="text-sm text-neutral-700">puntos</p>
         </div>
       </div>
@@ -61,7 +64,7 @@ export default function ClientDashboard({ client, negocio }: Props) {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="tienda">
-          <PuntosStore client={client} onPointsChange={updatePoints} />
+          <PuntosStore client={{ ...client, points }} onPointsChange={updatePoints} />
         </TabsContent>
         <TabsContent value="regalos">
           <RegalosTab clientId={client.id} visitCount={client.visitCount} />
@@ -70,10 +73,10 @@ export default function ClientDashboard({ client, negocio }: Props) {
           <CuponesTab clientId={client.id} />
         </TabsContent>
         <TabsContent value="encuestas">
-          <EncuestasTab clientId={client.id} onPointsChange={updatePoints} currentPoints={client.points} />
+          <EncuestasTab clientId={client.id} onPointsChange={updatePoints} currentPoints={points} />
         </TabsContent>
         <TabsContent value="sorteos">
-          <SorteosTab clientId={client.id} clientPoints={client.points} onPointsChange={updatePoints} />
+          <SorteosTab clientId={client.id} clientPoints={points} onPointsChange={updatePoints} />
         </TabsContent>
       </Tabs>
     </div>
