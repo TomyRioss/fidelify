@@ -9,14 +9,14 @@ export default function LandingCTA() {
           Empezá a fidelizar<br />clientes hoy mismo
         </h2>
         <p className="text-neutral-800 text-lg mb-10 max-w-xl mx-auto">
-          Unite a los más de 500 restaurantes que ya usan FielGo para aumentar sus visitas repetidas y mejorar su negocio.
+          Unite a los restaurantes que ya usan FielGo para aumentar sus visitas repetidas y mejorar su negocio.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
           <Link
             href="/register"
             className="bg-white hover:bg-neutral-100 text-neutral-900 px-8 py-4 rounded-lg font-semibold transition-all duration-200 flex items-center gap-2 w-full sm:w-auto justify-center"
           >
-            Probar Gratis por 14 días <FiArrowRight size={18} />
+            Probar Gratis por 30 días <FiArrowRight size={18} />
           </Link>
           <a
             href="https://wa.me/5491134083140"
