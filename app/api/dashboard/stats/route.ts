@@ -2,22 +2,34 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
-async function getCurrentUser() {
+async function getRestaurantId(): Promise<string | null> {
   const session = await auth();
   if (!session?.user?.id) return null;
-  return prisma.user.findUnique({
+  if ((session.user as { type?: string }).type === "cliente") return null;
+
+  const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { id: true, role: true, restaurantId: true },
+    select: { restaurantId: true },
   });
+  if (user?.restaurantId) return user.restaurantId;
+
+  const slug = (session.user as { restaurantSlug?: string }).restaurantSlug;
+  if (!slug) return null;
+  const restaurant = await prisma.restaurant.findUnique({
+    where: { slug },
+    select: { id: true },
+  });
+  return restaurant?.id ?? null;
 }
 
 export async function GET() {
   try {
-    const me = await getCurrentUser();
-    if (!me?.restaurantId) {
+    const restaurantId = await getRestaurantId();
+    if (!restaurantId) {
       console.error("[api/dashboard/stats GET] Unauthorized or no restaurantId");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+    const me = { restaurantId };
 
     const now = new Date();
     const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);

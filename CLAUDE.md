@@ -1,7 +1,11 @@
 # Project Instructions for Claude
 
 ## Fallbacks
-- Never use hardcoded fallback values (e.g. `?? "Mi Negocio"`, `|| "default"`). If data is loading, show a spinner. If data is missing, show nothing or an explicit error state.
+- **NUNCA usar fallbacks de ningún tipo.** Esto es crítico para el debugging.
+- Prohibido: `?? "valor"`, `|| "default"`, `?? 0`, `?? []`, `?? {}`, valores por defecto en destructuring, parámetros opcionales con default, etc.
+- Si un dato está cargando: mostrar spinner.
+- Si un dato es null/undefined: mostrar estado de error explícito o nada — nunca un valor inventado.
+- Los fallbacks ocultan errores reales y hacen imposible detectar cuándo algo falla.
 
 ## Error Handling
 - All errors must be caught and handled explicitly.

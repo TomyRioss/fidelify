@@ -27,7 +27,14 @@
       "Bash(npx prisma:*)",
       "Read(//tmp/**)",
       "Bash(npm run:*)",
-      "Bash(find C:/Users/Pc/Desktop/fidelyai/components -name Coupon* -o -name coupon*)"
+      "Bash(find C:/Users/Pc/Desktop/fidelyai/components -name Coupon* -o -name coupon*)",
+      "Bash(npm i:*)",
+      "WebFetch(domain:llmstxt.org)",
+      "WebFetch(domain:www.semrush.com)",
+      "WebFetch(domain:www.indexlab.ai)",
+      "WebFetch(domain:llmgeokit.com)",
+      "WebFetch(domain:firstpagesage.com)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

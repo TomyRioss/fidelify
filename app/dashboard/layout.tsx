@@ -9,6 +9,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
     redirect("/login");
   }
 
+  if ((session.user as { type?: string }).type === "cliente") {
+    redirect("/clientes");
+  }
+
   return (
     <div className="flex h-screen bg-white">
       <BusinessSidebar />

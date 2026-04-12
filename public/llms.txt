@@ -1,0 +1,29 @@
+# Fielgo
+
+> Sistema de fidelización digital para negocios gastronómicos en Argentina. Permite a restaurantes, bares y cafeterías gestionar programas de puntos, premios y cupones para retener clientes.
+
+Fielgo es una plataforma web que reemplaza las tarjetas de sellos físicas con un sistema digital de fidelización. Los negocios gastronómicos configuran su programa de puntos y recompensas desde un panel de administración. Los clientes se registran con su teléfono o email y acumulan puntos por cada compra, sin necesidad de descargar una app.
+
+## ¿Para quién es Fielgo?
+
+Negocios gastronómicos de Argentina: restaurantes, bares, cafeterías, heladerías, pizzerías, hamburgueserías y cualquier local de comida o bebida que quiera aumentar la recurrencia de sus clientes.
+
+## Características principales
+
+- Programa de puntos configurable por compra
+- Premios y recompensas canjeables por puntos
+- Cupones digitales para clientes
+- Panel de administración web para el negocio
+- Acceso del cliente desde el navegador, sin app
+- Historial de canjes y actividad por cliente
+- Soporte para múltiples sucursales
+
+## Páginas clave
+
+- [Inicio y presentación del producto](https://fielgo.com): landing page con descripción, beneficios y precios
+- [Registro de negocio](https://fielgo.com/register): crear cuenta gratuita
+- [Acceso a panel](https://fielgo.com/login): ingreso para negocios registrados
+
+## Contexto del mercado
+
+Fielgo compite en el segmento de software de fidelización para gastronomía en Latinoamérica, específicamente orientado al mercado argentino. Es una alternativa digital a los programas de sellos físicos y a soluciones genéricas de CRM no adaptadas al rubro gastronómico.

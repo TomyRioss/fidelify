@@ -6,6 +6,7 @@ import { getUserBranches, getUserRestaurantName } from "@/lib/services/branch-se
 import { BranchProvider } from "@/lib/branch-context";
 import NextAuthSessionProvider from "@/components/session-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,15 +19,51 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FielGo – Fidelización para restaurantes modernos",
-  description: "FielGo es el sistema de fidelización diseñado para restaurantes modernos. Gestiona puntos, premios y clientes desde un solo lugar.",
-  keywords: ["fidelización", "restaurantes", "puntos", "premios", "FielGo", "loyalty"],
+  title: {
+    default: "Fielgo – Sistema de Fidelización para Gastronomía",
+    template: "%s | Fielgo",
+  },
+  description:
+    "Fielgo es el sistema de fidelización para gastronomía. Fidelizá clientes de tu restaurante, bar o cafetería con puntos, premios y cupones digitales. Probá gratis.",
+  keywords: [
+    "fielgo",
+    "fidelización gastronomía",
+    "sistema fidelización restaurantes",
+    "programa de puntos restaurante",
+    "fidelizar clientes gastronomía",
+    "loyalty gastronomía Argentina",
+    "software fidelización bar",
+    "app fidelización restaurante",
+    "premios clientes restaurante",
+    "cupones digitales gastronomía",
+    "sistema de puntos gastronomía",
+  ],
+  metadataBase: new URL("https://fielgo.com"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "FielGo – Fidelización para restaurantes modernos",
-    description: "Gestiona la fidelización de tus clientes con FielGo.",
-    siteName: "FielGo",
+    title: "Fielgo – Sistema de Fidelización para Gastronomía",
+    description:
+      "Fidelizá clientes de tu restaurante, bar o cafetería con puntos, premios y cupones digitales.",
+    siteName: "Fielgo",
+    url: "https://fielgo.com",
     locale: "es_AR",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fielgo – Sistema de Fidelización para Gastronomía",
+    description:
+      "Fidelizá clientes de tu restaurante, bar o cafetería con puntos, premios y cupones digitales.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
 };
 
@@ -51,6 +88,7 @@ export default async function RootLayout({
           <BranchProvider branches={branches} restaurantName={restaurantName}>{children}</BranchProvider>
         </NextAuthSessionProvider>
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );

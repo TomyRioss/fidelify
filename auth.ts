@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
+      id: "negocio",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
@@ -19,7 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         if (!user || !user.password) {
-          console.error("[NextAuth] User not found or no password:", credentials.email);
+          console.error("[NextAuth/negocio] User not found:", credentials.email);
           return null;
         }
 
@@ -30,11 +31,54 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           : password === user.password;
 
         if (!valid) {
-          console.error("[NextAuth] Invalid password for:", credentials.email);
+          console.error("[NextAuth/negocio] Invalid password:", credentials.email);
           return null;
         }
 
-        return { id: user.id, email: user.email, name: user.name, role: user.role, restaurantSlug: user.restaurant?.slug };
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          restaurantSlug: user.restaurant?.slug,
+          type: "negocio",
+        };
+      },
+    }),
+    Credentials({
+      id: "cliente",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+
+        const cliente = await prisma.clienteGlobal.findUnique({
+          where: { email: credentials.email as string },
+        });
+
+        if (!cliente) {
+          console.error("[NextAuth/cliente] Cliente not found:", credentials.email);
+          return null;
+        }
+
+        const valid = await bcrypt.compare(
+          credentials.password as string,
+          cliente.password
+        );
+
+        if (!valid) {
+          console.error("[NextAuth/cliente] Invalid password:", credentials.email);
+          return null;
+        }
+
+        return {
+          id: cliente.id,
+          email: cliente.email,
+          name: `${cliente.firstName} ${cliente.lastName}`,
+          type: "cliente",
+        };
       },
     }),
   ],
@@ -42,6 +86,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.type = (user as { type?: string }).type;
         token.role = (user as { role?: string }).role;
         token.restaurantSlug = (user as { restaurantSlug?: string }).restaurantSlug;
       }
@@ -50,8 +95,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
+        (session.user as { type?: string }).type = token.type as string;
         (session.user as { role?: string }).role = token.role as string;
-        (session.user as { restaurantSlug?: string }).restaurantSlug = token.restaurantSlug as string;
+        (session.user as { restaurantSlug?: string }).restaurantSlug =
+          token.restaurantSlug as string;
       }
       return session;
     },

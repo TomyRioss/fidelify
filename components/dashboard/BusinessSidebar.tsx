@@ -20,6 +20,7 @@ import {
   FiBriefcase,
   FiDollarSign,
   FiMapPin,
+  FiCheckSquare,
 } from "react-icons/fi";
 import { signOut, useSession } from "next-auth/react";
 import { useBranch } from "@/lib/branch-context";
@@ -66,6 +67,7 @@ export default function BusinessSidebar() {
 
   const homeActive = pathname === "/dashboard";
   const settingsActive = pathname.startsWith("/dashboard/configuracion");
+  const validarActive = pathname.startsWith("/dashboard/validar");
 
   return (
     <aside className="flex h-screen w-60 flex-col border-r border-neutral-200 bg-white">
@@ -208,6 +210,19 @@ export default function BusinessSidebar() {
             </div>
           )}
         </div>
+
+        {/* Validar código */}
+        <Link
+          href="/dashboard/validar"
+          className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition-colors ${
+            validarActive
+              ? "bg-orange-50 font-medium text-orange-600"
+              : "text-neutral-500 hover:bg-orange-50 hover:text-orange-600"
+          }`}
+        >
+          <FiCheckSquare className="shrink-0 text-lg" />
+          Validar código
+        </Link>
 
         {/* Configuración general */}
         <Link

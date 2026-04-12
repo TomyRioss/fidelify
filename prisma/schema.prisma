@@ -71,6 +71,19 @@ enum SurveyQuestionType {
 
 // ─── Models ──────────────────────────────────────────────────────────────────
 
+model Plan {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Decimal
+  currency    String   @default("ARS")
+  features    Json
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  restaurants Restaurant[]
+}
+
 model Restaurant {
   id                 String             @id @default(cuid())
   name               String
@@ -78,11 +91,18 @@ model Restaurant {
   email              String
   phone              String?
   address            String?
+  logoUrl            String?
+  websiteUrl         String?
+  googleMapsUrl      String?
+  latitude           Decimal?
+  longitude          Decimal?
+  planId             String?
   subscriptionStatus SubscriptionStatus @default(TRIAL)
   trialStartsAt      DateTime?
   trialEndsAt        DateTime?
   createdAt          DateTime           @default(now())
 
+  plan               Plan?              @relation(fields: [planId], references: [id])
   users              User[]
   branches           Branch[]
   pointsRules        PointsRule[]
@@ -178,6 +198,9 @@ model Client {
   visitCount  Int       @default(0)
   active      Boolean   @default(true)
   createdAt   DateTime  @default(now())
+
+  clienteGlobalId String?
+  clienteGlobal   ClienteGlobal? @relation(fields: [clienteGlobalId], references: [id], onDelete: SetNull)
 
   restaurant        Restaurant         @relation(fields: [restaurantId], references: [id])
   sales             Sale[]
@@ -473,4 +496,20 @@ model SurveyAnswer {
 
   response SurveyResponse @relation(fields: [responseId], references: [id])
   question SurveyQuestion @relation(fields: [questionId], references: [id])
+}
+
+// ─── Clientes Globales ────────────────────────────────────────────────────────
+
+model ClienteGlobal {
+  id        String   @id @default(cuid())
+  dni       String   @unique
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  clientesLocales Client[]
 }

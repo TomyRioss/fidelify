@@ -43,12 +43,12 @@ export default function LandingHeader() {
           </a>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <Link
-            href="/login"
-            className="hidden sm:block text-gray-600 hover:text-orange-500 transition-colors text-sm font-medium"
+            href="/clientes/login"
+            className="hidden sm:flex items-center gap-1.5 border border-orange-400 text-orange-600 hover:bg-orange-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
           >
-            Iniciar sesión
+            Soy cliente
           </Link>
           <Link
             href="/login"
