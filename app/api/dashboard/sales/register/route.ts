@@ -31,8 +31,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "La sucursal es requerida." }, { status: 400 });
     }
 
+    const restaurantId = user.restaurantId as string;
     const client = await prisma.client.findUnique({
-      where: { restaurantId_dni: { restaurantId: user.restaurantId, dni: dni.trim() } },
+      where: { restaurantId_dni: { restaurantId, dni: dni.trim() } },
       select: { id: true, firstName: true, lastName: true, points: true },
     });
     if (!client) {
@@ -40,12 +41,12 @@ export async function POST(request: Request) {
     }
 
     const total = Number(amount);
-    const pointsEarned = await calculatePointsEarned(user.restaurantId, total);
+    const pointsEarned = await calculatePointsEarned(restaurantId, total);
 
     const result = await prisma.$transaction(async (tx) => {
       const sale = await tx.sale.create({
         data: {
-          restaurantId: user.restaurantId,
+          restaurantId,
           branchId,
           clientId: client.id,
           total,
@@ -61,7 +62,7 @@ export async function POST(request: Request) {
         });
         await tx.pointsLedger.create({
           data: {
-            restaurantId: user.restaurantId,
+            restaurantId,
             branchId,
             clientId: client.id,
             delta: pointsEarned,
