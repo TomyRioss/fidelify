@@ -12,7 +12,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
   const product = await prisma.catalogProduct.findFirst({
     where: { id, restaurantId: me.restaurantId },
-    select: { id: true, name: true, description: true, pointCost: true },
+    select: { id: true, name: true, description: true, pointCost: true, imageUrl: true, active: true },
   });
   if (!product) redirect("/dashboard/puntos");
 
@@ -25,6 +25,8 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           name: product.name,
           description: product.description ?? "",
           pointCost: String(product.pointCost),
+          imageUrl: product.imageUrl ?? "",
+          active: product.active,
         }}
       />
     </div>

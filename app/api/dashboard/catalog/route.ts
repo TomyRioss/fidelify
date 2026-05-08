@@ -22,7 +22,7 @@ export async function GET() {
     const products = await prisma.catalogProduct.findMany({
       where: { restaurantId: me.restaurantId },
       orderBy: { createdAt: "desc" },
-      select: { id: true, name: true, description: true, pointCost: true, active: true, createdAt: true },
+      select: { id: true, name: true, description: true, pointCost: true, active: true, imageUrl: true, createdAt: true },
     });
 
     return NextResponse.json({ products, callerRole: me.role });
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { name, description, pointCost } = body;
+    const { name, description, pointCost, imageUrl, active } = body;
 
     if (!name || !pointCost) {
       return NextResponse.json({ error: "Nombre y costo en puntos son requeridos." }, { status: 400 });
@@ -57,8 +57,15 @@ export async function POST(request: Request) {
     }
 
     const product = await prisma.catalogProduct.create({
-      data: { name, description: description || null, pointCost: cost, restaurantId: me.restaurantId },
-      select: { id: true, name: true, description: true, pointCost: true, active: true, createdAt: true },
+      data: {
+        name,
+        description: description || null,
+        pointCost: cost,
+        restaurantId: me.restaurantId,
+        imageUrl: imageUrl || null,
+        active: active !== undefined ? active : true,
+      },
+      select: { id: true, name: true, description: true, pointCost: true, active: true, imageUrl: true, createdAt: true },
     });
 
     return NextResponse.json(product, { status: 201 });

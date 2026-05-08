@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { FiShoppingBag, FiCheckCircle } from "react-icons/fi";
@@ -10,6 +11,7 @@ interface Product {
   description: string | null;
   pointCost: number;
   active: boolean;
+  imageUrl: string | null;
 }
 
 interface Receipt {
@@ -128,16 +130,23 @@ export default function PuntosStore({ client, onPointsChange }: Props) {
         return (
           <div
             key={product.id}
-            className="flex items-center justify-between rounded-xl border-2 border-orange-200 bg-white p-5 shadow-sm"
+            className="flex items-center justify-between rounded-xl border-2 border-orange-200 bg-white p-5 shadow-sm gap-4"
           >
-            <div>
-              <p className="text-base font-semibold text-neutral-900">{product.name}</p>
-              {product.description && (
-                <p className="mt-0.5 text-sm text-neutral-500">{product.description}</p>
+            <div className="flex items-center gap-4 min-w-0">
+              {product.imageUrl && (
+                <div className="relative w-14 h-14 rounded-lg border border-orange-100 overflow-hidden shrink-0">
+                  <Image src={product.imageUrl} alt={product.name} fill className="object-cover" sizes="56px" />
+                </div>
               )}
-              <p className="mt-2 text-sm font-bold text-orange-600">
-                {product.pointCost.toLocaleString()} puntos
-              </p>
+              <div className="min-w-0">
+                <p className="text-base font-semibold text-neutral-900">{product.name}</p>
+                {product.description && (
+                  <p className="mt-0.5 text-sm text-neutral-500">{product.description}</p>
+                )}
+                <p className="mt-2 text-sm font-bold text-orange-600">
+                  {product.pointCost.toLocaleString()} puntos
+                </p>
+              </div>
             </div>
             <button
               onClick={() => handleRedeem(product)}

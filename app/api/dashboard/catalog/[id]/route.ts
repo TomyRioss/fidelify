@@ -35,12 +35,13 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     }
 
     const body = await req.json();
-    const { name, description, pointCost, active } = body;
+    const { name, description, pointCost, active, imageUrl } = body;
 
     const updateData: Record<string, unknown> = {};
     if (name !== undefined) updateData.name = name;
     if (description !== undefined) updateData.description = description || null;
     if (active !== undefined) updateData.active = active;
+    if (imageUrl !== undefined) updateData.imageUrl = imageUrl || null;
     if (pointCost !== undefined) {
       const cost = parseInt(pointCost, 10);
       if (isNaN(cost) || cost <= 0) {

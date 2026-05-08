@@ -17,7 +17,7 @@ export default async function PuntosPage() {
   const products = await prisma.catalogProduct.findMany({
     where: { restaurantId: me.restaurantId },
     orderBy: { createdAt: "desc" },
-    select: { id: true, name: true, description: true, pointCost: true, active: true, createdAt: true },
+    select: { id: true, name: true, description: true, pointCost: true, active: true, imageUrl: true, createdAt: true },
   });
 
   const serialized = products.map((p) => ({

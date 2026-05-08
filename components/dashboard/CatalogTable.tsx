@@ -1,11 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { FiPlus, FiEdit2, FiTrash2 } from "react-icons/fi";
+import { FiPlus, FiEdit2, FiTrash2, FiImage } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 type CatalogProduct = {
   id: string;
@@ -13,6 +12,7 @@ type CatalogProduct = {
   description: string | null;
   pointCost: number;
   active: boolean;
+  imageUrl: string | null;
   createdAt: string;
 };
 
@@ -71,6 +71,7 @@ export default function CatalogTable({
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neutral-100 bg-orange-50 text-left">
+                <th className="px-6 py-4 font-medium text-neutral-600">Imagen</th>
                 <th className="px-6 py-4 font-medium text-neutral-600">Nombre</th>
                 <th className="px-6 py-4 font-medium text-neutral-600">Descripción</th>
                 <th className="px-6 py-4 font-medium text-neutral-600">Costo (pts)</th>
@@ -81,6 +82,17 @@ export default function CatalogTable({
             <tbody>
               {initialData.map((product) => (
                 <tr key={product.id} className="border-b border-neutral-100 last:border-0 hover:bg-orange-50 transition-colors">
+                  <td className="px-6 py-4">
+                    {product.imageUrl ? (
+                      <div className="relative w-10 h-10 rounded border border-orange-100 overflow-hidden">
+                        <Image src={product.imageUrl} alt={product.name} fill className="object-cover" sizes="40px" />
+                      </div>
+                    ) : (
+                      <div className="w-10 h-10 rounded border border-neutral-200 bg-neutral-50 flex items-center justify-center">
+                        <FiImage size={14} className="text-neutral-300" />
+                      </div>
+                    )}
+                  </td>
                   <td className="px-6 py-4 font-medium text-neutral-900">{product.name}</td>
                   <td className="px-6 py-4 text-neutral-500">{product.description ?? "—"}</td>
                   <td className="px-6 py-4 text-neutral-700">{product.pointCost}</td>
@@ -124,7 +136,7 @@ export default function CatalogTable({
               ))}
               {initialData.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-neutral-400">
+                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-400">
                     No hay productos en el catálogo.
                   </td>
                 </tr>
