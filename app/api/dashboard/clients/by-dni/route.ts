@@ -9,7 +9,8 @@ async function getRestaurantId(): Promise<string | null> {
     where: { id: session.user.id },
     select: { restaurantId: true },
   });
-  return user?.restaurantId ?? null;
+  if (!user?.restaurantId) return null;
+  return user.restaurantId;
 }
 
 export async function GET(request: Request) {
@@ -27,16 +28,33 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "El DNI es requerido." }, { status: 400 });
     }
 
-    const client = await prisma.client.findUnique({
-      where: { restaurantId_dni: { restaurantId, dni } },
-      select: { id: true, firstName: true, lastName: true, points: true, visitCount: true, active: true },
+    const global = await prisma.clienteGlobal.findUnique({
+      where: { dni: dni.trim() },
+      select: { id: true, dni: true, firstName: true, lastName: true, email: true, phone: true },
     });
 
-    if (!client) {
+    if (!global) {
       return NextResponse.json({ error: "Cliente no encontrado." }, { status: 404 });
     }
 
-    return NextResponse.json(client);
+    const membership = await prisma.client.findUnique({
+      where: {
+        restaurantId_clienteGlobalId: { restaurantId, clienteGlobalId: global.id },
+      },
+      select: { affiliationStatus: true },
+    });
+
+    const alreadyAffiliated = membership?.affiliationStatus === "ACTIVE";
+
+    return NextResponse.json({
+      found: true,
+      alreadyAffiliated,
+      dni: global.dni,
+      firstName: global.firstName,
+      lastName: global.lastName,
+      email: global.email,
+      phone: global.phone,
+    });
   } catch (err) {
     console.error("[api/dashboard/clients/by-dni GET] Unexpected error:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
